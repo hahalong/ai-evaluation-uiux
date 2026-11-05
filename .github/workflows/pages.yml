@@ -15,22 +15,24 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v6
-      - name: Import verified Sites V23 snapshot
+      - name: Import local Sites V23 snapshot
         if: ${{ hashFiles('dist/index.html') == '' }}
         run: |
-          echo 'b21e1e8844582eddd3897dd01ed356cf94d4df07b1256ca75d1a99204299635c  sites-v23-bootstrap.zip' | sha256sum --check
-          unzip -o sites-v23-bootstrap.zip
-          python scripts/import-sites-snapshot.py
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dist docs tests scripts migration README.md .openai/hosting.json
-          git rm sites-v23-bootstrap.zip
-          git commit -m "Import complete Sites V23 snapshot with verified SHA-256 checksums"
-          git push origin HEAD:main
+          cat sites-v23-chunk-*.bin > /tmp/sites-v23-source.tar.gz
+          echo '74d96665baf73d6fdb2d6bbe1183924a7161908b651c8c450a8c5a1eb492fbd9  /tmp/sites-v23-source.tar.gz' | sha256sum --check
+          tar -xzf /tmp/sites-v23-source.tar.gz
+          python - <<'PYVERIFY'
+          import hashlib, json
+          from pathlib import Path
+          manifest = json.loads(Path('migration/sites-v23-manifest.json').read_text())
+          for item in manifest['files']:
+              data = Path(item['path']).read_bytes()
+              assert len(data) == item['bytes'], item['path']
+              assert hashlib.sha256(data).hexdigest() == item['sha256'], item['path']
+          print(f"Verified all {len(manifest['files'])} original files; historical evidence unchanged.")
+          PYVERIFY
       - name: Test shared UI and lifecycle logic
         run: node --test tests/*.test.cjs
       - name: Prepare portable static routes
