@@ -1,53 +1,43 @@
-# AI评测平台 · UI/UX交互稿
+# AI 评测平台 · UI/UX 交互原型
 
-本仓库用于平台方案交互演示、验收走查和场景 Demo，基于 Sites 当前发布的 **V23** 迁移。它是浏览器本地交互原型，不代表生产评测服务已经建成。
+当前界面为 **流程整合版 2026.11.11 / R1**，于 2026-11-12 同步到本仓库。用于方案评审、操作演练和验收走查；设备、执行器、框架响应与裁判结果使用本地合成回放。
 
-- 原站点：https://ai-evaluation-uiux.medusalong.chatgpt.site
-- GitHub Pages：https://hahalong.github.io/ai-evaluation-uiux/
-- 来源提交：`9484622157f151de99e299eaad1e9a2d6fdcbe1e`
-- 原始文件校验清单：`migration/sites-v23-manifest.json`
+- 在线原型：[GitHub Pages](https://hahalong.github.io/ai-evaluation-uiux/)
+- 最新流程、截图及 Demo：[完整评测流程_PRD补全](https://baic.feishu.cn/wiki/NGhXwwxLBiBJ4BkDZAHcYfwdndt)
+- 可维护源码：`dist/`，无需 npm 安装或编译。
 
-## 获取可编辑源码
+## 这次更新
 
-仓库目前通过 11 个 `sites-v23-chunk-*.bin` 文件保存完整源码快照（共 924 个原始文件），不是仅有页面截图。发布任务只读取仓库，不向分支回写。首次在 Codex 或本地开发时先解包：
+- Agent/模型广场、资产中心、执行与评分能力及同类列表采用统一布局。
+- 导航先进入项目列表；业务演练从“帮助与示例 → 示例中心”进入。
+- 支持批量导入的资产把批量导入与单条创建放在同一操作区，并提供分类模板和说明。
+- 套件支持新建、草稿维护和固定版本复用；从任务补材料后返回原任务原步骤。
+- V2 工作簿导入保留来源和差异，按云端、台架、实车展开计划。
+- E01–E06 以样本、独立金标、执行器、适配器和可执行指标串起评测；E03 与 Ripple 回传校验固定版本、重复回传及缺失证据。
+- 示例中心展示 OpenCompass、AgentCompass、Ragas 的不同分工，以及 E03 三类能力的配置前准备和联调。
+
+## 使用
+
+打开在线原型后，日常工作从对应目录新建或维护。要学习完整流程，进入示例中心，先走 E03：准备样本与金标、复用通过验证的能力、预检、冻结、执行回放、接收证据、计算并查看报告。
+
+回放资格不等于真实服务的运行资格。5000 ms、3000 ms 等演练窗口及示例门槛不作为正式业务验收标准。执行状态、质量结论和证据覆盖分别显示，缺少独立读回的数据保留为 UNKNOWN。
+
+最新 Demo、当前截图和历史资料在上方飞书文档第 11 节统一提供。旧 `walkthrough.html`、`demos/` 和历史截图保留原始内容与日期，供追溯使用。
+
+## 本地维护与验证
 
 ```sh
 git clone https://github.com/hahalong/ai-evaluation-uiux.git
 cd ai-evaluation-uiux
-cat sites-v23-chunk-*.bin > /tmp/ai-evaluation-uiux-v23.tar.gz
-echo '74d96665baf73d6fdb2d6bbe1183924a7161908b651c8c450a8c5a1eb492fbd9  /tmp/ai-evaluation-uiux-v23.tar.gz' | sha256sum --check
-tar -xzf /tmp/ai-evaluation-uiux-v23.tar.gz --exclude=README.md
-```
-
-解包后有 `dist/`、`tests/`、`scripts/`、`docs/` 和校验清单。后续可正常编辑并将这些源码目录提交到仓库；发布任务检测到 `dist/index.html` 后会直接使用已提交的源码，跳过原快照解包。
-
-## 编辑和发布
-
-`dist/` 就是维护中的 HTML/CSS/JavaScript 源码，无需 npm 安装或构建。
-
-```sh
 node --test tests/*.test.cjs
-python scripts/prepare-pages.py
-python -m http.server 8000 --directory dist
+python3 scripts/prepare-pages.py
+python3 -m http.server 8000 --directory dist
 ```
 
-推送到 `main` 后，GitHub Actions 测试并将 `dist/` 发布到 GitHub Pages。发布只使用仓库中的文件，不需要原 Sites 站点提供运行时资源。
+访问 `http://127.0.0.1:8000/`。主界面在 `dist/index.html`；E03 接入验证台在 `dist/e03-prep/index.html`；外部执行回放在 `dist/a84-external.html`。
 
-## 入口与主要文件
+`scripts/prepare-pages.py` 从已提交的 V23 分片快照恢复缺失的旧示例资源，并逐文件核对摘要。它不会覆盖 `dist/` 中的新源码，也不会访问原 Sites 站点。分片仍用于保存原始历史资源，当前界面直接维护 `dist/`。
 
-- `dist/index.html`：平台入口、基础状态与脚本加载顺序。
-- `dist/prd-v15.js`：当前任务页面和用户操作；文件名不表示发布版本。
-- `dist/run-lifecycle.js`：自动用量计价、清理复位、取消、报告权限及独立状态。
-- `dist/walkthrough.html`、`dist/walkthrough-current/`：12 个场景走查材料和合成验证记录。
-- `dist/history/20261028/`：原历史材料，保留原始内容与原时间。
-- `tests/`：126 项自动化测试；`docs/`：已有设计与评审记录。
+推送到 `main` 后，现有 GitHub Actions 执行测试、恢复旧资源并发布 Pages。分片和引导包应随仓库一同保留。
 
-## 维护约束
-
-正常评测业务流程无需运维逐次确认。系统按批准价格幂等计费、自动执行已获准清理；只有技术异常才转交运维/系统维护人，价格或账单问题转有权限的成本/财务人员。运维身份不赋予报告权限；不导出报告不能阻止业务完成。执行、质量、验收、清理、费用、导出状态分别维护。
-
-取消必须先停新派发，再核实执行影响、清理和费用。未知费用不能当作零；未核清预算不能全部释放；复位失败须隔离。业务接受或技术恢复不能改写质量结论。
-
-旧日志、截图、导出和时间不得改写。合成验证记录不等于生产验收；新场景录像需真实重跑后再生成。本次迁移不重新生成业务走查证据。
-
-任务状态保存在当前浏览器的 localStorage 中；原站点与 GitHub Pages 域名不同，浏览器中的个人演示状态不会自动迁移。
+浏览器草稿保存在当前网页来源的 localStorage 中。原 Sites、本地预览和 GitHub Pages 的草稿不会自动迁移。

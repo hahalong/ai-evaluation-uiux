@@ -1,0 +1,33 @@
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6fa;color:#18283d;font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+header{background:#182c45;color:#fff;padding:24px max(24px,calc((100vw - 1060px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1,h2,p{margin:0}
+header h1{font-size:26px;margin:4px 0}
+header p,.eyebrow{color:#c8d7e9}
+.eyebrow{font-size:13px}
+main{max-width:1108px;margin:auto;padding:20px 24px}
+section{background:#fff;border:1px solid #d6e0eb;border-radius:8px;margin:16px 0;padding:18px}
+h2{font-size:18px;margin:0 0 10px}
+.notice{padding:10px 14px;border:1px solid #e9ca8b;background:#fff8e9;border-radius:6px;color:#684717}
+label{display:block;font-weight:600}
+input[type=file]{width:100%;border:1px solid #cbd6e3;border-radius:6px;padding:8px;margin-top:6px}
+button{font:inherit;color:#18283d;border:1px solid #b8c8da;border-radius:6px;padding:7px 12px;background:white;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid #225ac1;outline-offset:2px}
+button.primary{background:#245abd;border-color:#245abd;color:white}
+button:disabled{opacity:.48;cursor:not-allowed}
+dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 12px;margin:0 0 12px}
+dt{color:#516681}
+dd{margin:0;overflow-wrap:anywhere}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px 10px;border-bottom:1px solid #e1e8f1;text-align:left}
+th{background:#edf2f8}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+#result{color:#1a5165}
+details{margin:8px 0}
+summary{cursor:pointer;color:#245abd}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf2f8;border-radius:6px;padding:12px;margin:8px 0;color:#18283d}
+.observation-filters{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}
+.observation-filters select{display:block;min-width:150px;max-width:100%;font:inherit;border:1px solid #b8c8da;border-radius:6px;padding:6px 8px;background:#fff}
+#observation-description{color:#516681}
+#observation-json{max-height:38vh;overflow:auto}

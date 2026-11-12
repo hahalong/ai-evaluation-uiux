@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E03 接入验证台</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#15233a;background:#f3f6fa}
+*{box-sizing:border-box} body{margin:0} header{background:#142338;color:#fff;padding:14px 32px;font-weight:650}
+main{max-width:1320px;margin:0 auto;padding:23px 28px}
+h1{font-size:26px;margin:0 0 8px} h2{font-size:17px;margin:0 0 10px} p{font-size:14px;line-height:1.6;margin:8px 0}
+.context{color:#425677;margin-bottom:14px}.label{font-size:12px;border-radius:16px;background:#fef2d8;color:#733f14;padding:4px 10px;margin-left:10px;vertical-align:middle}
+nav,.actions{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}
+button{font:inherit;font-size:14px;background:white;color:#223a5d;border:1px solid #c4d0de;border-radius:6px;padding:9px 14px;cursor:pointer}
+button[aria-selected=true],.primary{color:#fff;background:#245fbb;border-color:#245fbb}button:disabled{opacity:.5;cursor:default}
+section,.card{border:1px solid #d7e0ea;border-radius:10px;background:#fff;padding:16px;margin-bottom:12px}
+.cards,.pair{display:grid;gap:12px}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.pair{grid-template-columns:repeat(2,minmax(0,1fr))}
+small{color:#516686} code,pre{font-family:ui-monospace,monospace;font-size:12px} code{overflow-wrap:anywhere}
+pre{background:#f0f4fa;padding:12px;border-radius:6px;max-height:255px;overflow:auto;white-space:pre-wrap;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;padding:6px 9px;border-bottom:1px solid #e4eaf0}
+th{background:#f1f5fb;color:#314a6e}tr:last-child td{border-bottom:0} .good{color:#176444;font-weight:650}.bad{color:#a11e25;font-weight:650}
+#report-data{display:block;width:100%;height:136px;margin-top:8px;font:12px ui-monospace,monospace}.hidden,[hidden]{display:none!important}
+@media(max-width:790px){main{padding:15px}.cards,.pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>台架接入 · 开发联调</header>
+<main>
+<h1>E03 接入验证台 <span class="label">本地台架回放</span></h1>
+<p class="context">宠物出行 V2 第 153 行 · 确认后实际执行成功率 · TEMP-02 首验，随后复算四组样本</p>
+<nav role="tablist" aria-label="E03 准备步骤">
+<button type="button" data-page="deliverables" role="tab" aria-selected="true">1. 核对三份交付物</button>
+<button type="button" data-page="interfaces" role="tab" aria-selected="false">2. 对照接口和样例</button>
+<button type="button" data-page="verification" role="tab" aria-selected="false">3. 运行组合联调</button>
+</nav>
+<div id="deliverables" role="tabpanel">
+<div id="deliverable-cards" class="cards"></div>
+<section><h2>交接资料</h2><p>用例输入与独立金标分开交付。运行记录按试次、尝试和同请求号关联，评分侧再读取金标。<br>可在制品目录执行 <code>node run.cjs --out 联调产物</code> 生成报告和分阶段 JSON。</p><small id="fingerprint"></small></section>
+</div>
+<div id="interfaces" role="tabpanel" hidden>
+<section>
+<h2>TEMP-02 · 30℃ / 31℃ · 稳定有宠视频 PET-01</h2>
+<div class="actions">
+<button type="button" data-interface="dispatch" aria-selected="true">派工与独立金标</button>
+<button type="button" data-interface="evidence" aria-selected="false">原始信号与适配输出</button>
+<button type="button" data-interface="score" aria-selected="false">评分输入与判定</button>
+</div>
+<div class="pair">
+<div><strong id="left-name"></strong><pre id="left-example"></pre></div>
+<div><strong id="right-name"></strong><pre id="right-example"></pre></div>
+</div>
+<p id="interface-note"></p>
+</section>
+</div>
+<div id="verification" role="tabpanel" hidden>
+<section>
+<div class="actions">
+<button class="primary" id="run" type="button">运行本地联调</button>
+<button id="download" type="button" disabled>导出联调报告 JSON</button>
+</div>
+<p id="summary" role="status">等待运行。校验字段、样例判定、任务幂等、取消与清理，并复算完整四组样本。</p>
+<table id="checks" hidden><thead><tr><th scope="col">验收项</th><th scope="col">预期</th><th scope="col">实际</th><th scope="col">核验</th></tr></thead><tbody></tbody></table>
+<details id="report-details" hidden><summary>查看报告原文</summary><textarea id="report-data" aria-label="报告 JSON" readonly></textarea></details>
+</section>
+</div>
+</main>
+<script src="../a84-v2-fixtures.js"></script>
+<script src="../a84-metric-engine.js"></script>
+<script src="contract.js"></script>
+<script src="adapter.js"></script>
+<script src="executor.js"></script>
+<script src="scorer.js"></script>
+<script src="fixtures.js"></script>
+<script src="build.js"></script>
+<script src="suite.js"></script>
+<script src="workbench.js"></script>
+</body>
+</html>

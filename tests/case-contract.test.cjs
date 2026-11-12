@@ -1,0 +1,21 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const C=require('../dist/case-contract.js'),F=require('../dist/case-file-import.js');
+test('four business examples produce complete contracts with isolated input and scoring references',()=>{
+ for(const key of Object.keys(C.templates)){const d=C.example(key),c=C.contract(d);assert.deepEqual(C.validate(d),[]);assert.ok(c.case_id);assert.equal(c.input_refs.length,1);assert.ok(c.initial_state_ref.version);assert.equal(c.missing_policy,'UNKNOWN');assert.ok(c.assertion_refs.length);assert.ok(c.mandatory.length);assert.ok(c.applicability);assert.equal('reference_ref' in c.input_refs[0],false);}
+});
+test('case and template expansion preserve independent identities and frozen version references',()=>{
+ const a=C.example('pet'),b=C.example('pet');assert.notEqual(a.caseId,b.caseId);assert.deepEqual(a.template_ref,b.template_ref);const pool=C.catalog();pool.input[0].version='v9';assert.ok(C.validate(a,pool).some(x=>x.text.includes('输入数据')));assert.equal(C.contract(a).input_refs[0].version,'v1.2');
+});
+test('sample must exist in selected exact dataset; a title is not a sample identifier',()=>{const d=C.example('pet');d.sample='not-found';assert.ok(C.validate(d).some(x=>x.text.includes('样本ID')));});
+test('draft resources and incompatible target types block candidate readiness',()=>{const d=C.example('pet'),pool=C.catalog();pool.initial[0].status='草稿';assert.ok(C.validate(d,pool).some(x=>x.text.includes('未发布')));d.target='模型';assert.ok(C.validate(d).some(x=>x.text.includes('不兼容')));});
+test('inherited mandatory assertions cannot be deleted, demoted, changed or silently upgraded',()=>{
+ for(const mutation of [d=>d.rules.pop(),d=>d.rules[0].mandatory=false,d=>d.rules[0].value='1',d=>d.rules[0].version='v2']){const d=C.example('pet');mutation(d);assert.ok(C.validate(d).some(x=>x.text.includes('继承强制')));}
+});
+test('allowed parameters are bounded; exceptions remain pending instead of bypassing validation',()=>{const d=C.example('pet');d.window=11;assert.ok(C.validate(d).some(x=>x.text.includes('3～10')));d.window=5;d.exception={reason:'想跳过',status:'pending'};assert.ok(C.validate(d).some(x=>x.text.includes('例外')));});
+test('negative or non-finite runtime bounds are invalid',()=>{for(const n of [-1,NaN,Infinity,'not-a-number']){const d=C.example('pet');d.timeout=n;assert.ok(C.validate(d).some(x=>x.text.includes('超时')));}});
+test('bulk expansion preserves strong rules and identifies duplicate source IDs without overwriting',()=>{const d=C.example('pet'),map={id:'id',name:'name',sample:'sample',allowed:'allowed'},rows=[{id:'p1',name:'拒绝',sample:'PET-001',allowed:'关闭'},{id:'p1',name:'重复',sample:'PET-002',allowed:'关闭'},{id:'p2',name:'缺最终状态',sample:'PET-003',allowed:''}];const plan=C.plan(rows,map,'team',d,C.catalog(),[{importNamespace:'team',importId:'p1'}]);assert.ok(plan[0].errors.includes('同一来源下的该用例ID已导入'));assert.ok(plan[1].errors.includes('本批次的用例ID重复'));assert.ok(plan[2].errors.includes('缺少允许的最终状态'));assert.equal(C.plan(rows.slice(0,1),map,'another-team',d,C.catalog(),[])[0].errors.length,0);});
+test('CSV preserves quoted commas, multiline cells, escaped quotes and trailing empty values',()=>{const p=F.parse('id,name,value\r\n1,"金额,汇总","第一行\n第二行"\r\n2,"用户说""不要""",');assert.equal(p.rows[0].value,'第一行\n第二行');assert.equal(p.rows[1].name,'用户说"不要"');assert.equal(p.rows[1].value,'');});
+test('JSONL, JSON envelopes and Excel pasted tables share a normalized mapping input',()=>{assert.equal(F.parse('{"id":"a"}\n{"id":"b"}').rows.length,2);assert.equal(F.parse('{"cases":[{"id":"a"}]}').rows.length,1);assert.deepEqual(F.parse('id\tname\nx\t用例').rows,[{id:'x',name:'用例'}]);});
+test('malformed input and excessive batches are rejected with a specific error',()=>{for(const s of ['id,id\na,b','id,name\na,b,c','id,name\na,"bad'])assert.throws(()=>F.parse(s));assert.throws(()=>F.parse('{"id":"a"}\nnot-json'),/JSONL第2行/);assert.throws(()=>F.parse(JSON.stringify(Array(501).fill({id:'a'}))),/500/);});
+test('legacy detail mapping preserves expected outcome independently of the executable input',()=>{const d=C.example('rag'),s=C.legacySpec(d,C.catalog());assert.equal(s.contract.reference_ref.id,'REF-RAG');assert.ok(!s.input.includes('超出80'));assert.equal(s.expected,d.allowed);assert.equal(s.prd.caseId,d.caseId);});

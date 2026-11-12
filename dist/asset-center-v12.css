@@ -1,0 +1,32 @@
+/* Restore the compact five-category visual hierarchy from the original asset center. */
+.v12-asset-center .asset-heading .pagehead{margin-bottom:18px;align-items:center}
+.v12-asset-center .asset-heading h1{font-size:26px}
+.v12-asset-center .asset-heading .pagehead p{font-size:13px;margin-top:6px}
+.v12-asset-center>.notice{padding:12px 16px;background:#f3f6ff;border-color:#d9e4ff;color:#56719c;font-size:13px;line-height:1.7;border-radius:9px;margin-bottom:10px;gap:12px}
+.v12-asset-center>.notice>svg{width:18px;height:18px;flex-shrink:0}
+.v12-asset-center .asset-groups{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;overflow:visible;padding:0;margin:0}
+.v12-asset-center .asset-group{min-width:0;min-height:50px;padding:11px 12px;border-radius:9px;gap:9px;background:#fff;border:1px solid #dfe5ef;color:#5a6e8c;cursor:pointer;transition:background .15s,border-color .15s}
+.v12-asset-center .asset-group svg{width:19px;height:19px}
+.v12-asset-center .asset-group strong{font-size:14px;font-weight:650}
+.v12-asset-center .asset-group small{font-size:11px;border-radius:5px;padding:2px 6px;background:#f0f3f8;color:#8190a5;line-height:1.4}
+.v12-asset-center .asset-group:hover{background:#f8faff;border-color:#a5baf2}
+.v12-asset-center .asset-group.active{background:#f2f6ff;border-color:#82a0f7;color:#3c67ca;box-shadow:inset 0 0 0 .5px #82a0f7}
+.v12-asset-center .asset-group.active small{background:#e4edff;color:#3c67ca}
+.v12-asset-types{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:13px 0 16px}
+.v12-asset-type{font:inherit;font-size:12px;border:1px solid transparent;border-radius:6px;background:transparent;color:#7a879c;padding:7px 13px;cursor:pointer}
+.v12-asset-type:hover{color:#3c67ca;background:#eaf0fc}
+.v12-asset-type.active{color:#3c67ca;background:#e8efff;border-color:#d6e1fb;font-weight:600}
+.v12-asset-type:focus-visible,.v12-asset-center .asset-group:focus-visible{outline:2px solid #3c67ca;outline-offset:3px}
+.v12-asset-center .cardhead{padding:16px 20px;min-height:0}
+.v12-asset-center .cardhead h2{font-size:16px}
+.v12-asset-rule{font-size:11px;color:#74859b}
+.v12-asset-center .v2-toolbar{padding:13px 18px;gap:9px;background:#fcfdff}
+.v12-asset-center .v2-toolbar .input{min-height:35px}
+.v12-asset-center .table tbody tr:hover{background:#f8faff}
+.v12-asset-center .table td:first-child{width:40px}
+.v12-asset-center .v2-pagination{background:#fcfdff}
+@media(max-width:1150px){.v12-asset-center .asset-group{gap:6px;padding:10px 8px}.v12-asset-center .asset-group strong{font-size:13px}.v12-asset-center .asset-group svg{width:17px;height:17px}}
+@media(max-width:1000px) and (min-width:761px){.v12-asset-center .asset-groups{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.v12-asset-center .asset-groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.v12-asset-center .asset-group{justify-content:flex-start;padding:11px 13px}.v12-asset-center .asset-group small{margin-left:auto}.v12-asset-center .asset-group strong{font-size:13px}.v12-asset-center .asset-heading h1{font-size:23px}.v12-asset-center .v2-toolbar{padding:12px}.v12-asset-center .v2-toolbar .input{width:auto;min-width:140px;flex:1}.v12-asset-center .v2-toolbar input{flex-basis:100%}.v12-asset-center .cardhead{padding:14px}.v12-asset-rule{font-size:10px}}
+@media(max-width:360px){.v12-asset-center .asset-groups{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.v12-asset-center .asset-group{transition:none}}

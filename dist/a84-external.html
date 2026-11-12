@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A8-4 外部执行回放</title>
+<link rel="stylesheet" href="a84-external.css">
+</head>
+<body>
+<header><div><span class="eyebrow">A8-4 · 开发回放</span><h1>外部执行回放</h1><p>接收平台派工，在台架或 Ripple 路径回放观测，生成可回传的 JSON。</p></div>
+<button type="button" id="return">返回评测平台</button></header>
+<main>
+<p class="notice" role="status" id="status">当前为本地合成环境。请选择从评测平台下载的派工文件。</p>
+<section aria-labelledby="input-title">
+<h2 id="input-title">领取平台派工</h2>
+<label for="manifest">派工 JSON</label>
+<input id="manifest" type="file" accept=".json,application/json">
+</section>
+<section id="job" hidden aria-labelledby="job-title">
+<h2 id="job-title"></h2>
+<dl id="summary"></dl>
+<div class="table-wrap"><table><thead><tr><th scope="col">用例</th><th scope="col">固定用例版本</th><th scope="col">采集或运行方式</th><th scope="col">登记试次</th></tr></thead><tbody id="trials"></tbody></table></div>
+<div class="actions"><button type="button" class="primary" id="execute">执行本地回放</button>
+<button type="button" id="download" disabled>下载结果 JSON</button></div>
+<p id="result" aria-live="polite"></p>
+<details id="observation" hidden>
+<summary>查看采集观测示例</summary>
+<div class="observation-filters">
+<label>用例<select id="observation-case"></select></label>
+<label>样本<select id="observation-sample"></select></label>
+</div>
+<p id="observation-description"></p>
+<pre id="observation-json"></pre>
+</details>
+</section>
+</main>
+<script src="multi-env-core.js"></script><script src="measure-rehearsal.js"></script><script src="a84-v2-fixtures.js"></script><script src="a84-metric-engine.js"></script><script src="agent-evaluation.js"></script><script src="a84-external.js"></script>
+</body></html>
