@@ -207,10 +207,11 @@ function change(e){const el=e.target,key=el.dataset.flField;if(!key||key==='read
 document.addEventListener('click',e=>{const b=e.target.closest('[data-fl]');if(!b||b.disabled)return;e.preventDefault();e.stopPropagation();handle(b.dataset.fl,b.dataset.key||'');},true);
 document.addEventListener('input',change);document.addEventListener('change',change);
 const oldAssets=pages.assets,oldResources=pages.resources,oldAllAssets=allAssets;
+const workspaceCase=a=>a.kind==='case'&&a.config?.workspaceFormat===1;
 function syncLegacy(){
  const model=f();
  let changed=false;
- for(const asset of oldAllAssets().filter(a=>a.kind==='case')){
+ for(const asset of oldAllAssets().filter(a=>a.kind==='case'&&!workspaceCase(a))){
   if(asset.version==='v1.0'&&model.cases.some(c=>c.id===asset.id&&!c.legacy&&c.version===1))continue;
   let c=model.cases.find(c=>c.id===asset.id&&c.legacy?.version===asset.version&&!c.origin?.sourceRef);
   if(c&&c.revision>1)continue;
@@ -246,7 +247,12 @@ function visibleCase(c){
  return {...c.legacy,id:c.id,flowRef:c.key,kind:'case',group:1,type:'评测用例',name:c.name,version:String(c.version),
   status:states[c.status],owner:c.owner,targets:[F.types[c.type]],content:c.description,count:c.steps.length+' 个执行动作'};
 }
-allAssets=function(){syncLegacy();return [...oldAllAssets().filter(a=>a.kind!=='case'),...f().cases.map(visibleCase)];};
+allAssets=function(){
+ syncLegacy();
+ const nativeAssets=oldAllAssets().filter(a=>a.kind!=='case'||workspaceCase(a));
+ const flowCases=f().cases.filter(c=>!c.legacy||!workspaceCase(c.legacy));
+ return [...nativeAssets,...flowCases.map(visibleCase)];
+};
 
 pages.assets=()=>S.assetType==='case'?caseList():(returnTask?wrap(notice('来源任务 '+h(returnTask)+' '+btn('返回原任务','return-task','','ghost'))):'')+oldAssets();Object.assign(pages,{'flow-case':caseEditor,'flow-import':()=>window.MultiEnvUI?.importPage()||importPage(),'flow-text-import':importPage,capabilities:caps,'flow-capability':capEditor,'flow-match':matchDetail,'flow-evidence':evidence,resources,'flow-source':sourcePage,'flow-binding':binding,'flow-legacy-resources':oldResources});
 document.addEventListener('click',event=>{

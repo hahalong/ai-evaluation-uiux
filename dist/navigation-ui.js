@@ -82,7 +82,7 @@
   function assetTable(list){return list.length?table(['名称 / 固定版本','类型','状态','下一步'],list.map(a=>{
     const ref=a.flowRef||E.key(a),draft=['草稿','DRAFT'].includes(a.status);
     return [h(a.name||'未命名草稿')+`<small>${h(ref)}</small>`,h(typeName(a.kind)),badge(a.status),
-      a.kind==='case'?native(draft?'继续配置':'查看与维护','fl','case-open',ref,'ghost'):
+      flowCase(a)?native(draft?'继续配置':'查看与维护','fl','case-open',ref,'ghost'):
       native(draft?'继续编辑':a.status==='待准入'?'查看确认进度':'查看与维护','v2',draft?'edit-asset':'asset',ref,'ghost')];
   })):empty('还没有项目资产','新建或导入后，草稿会显示在这里；发布后可以在评测任务中选择。');}
   const capabilityNames={executor:'执行器',adapter:'适配器',program:'动作与程序',scorer:'评分器'};
@@ -106,16 +106,21 @@
       table(heads,rows)+(rows.length?'':empty(items.length?'没有匹配的记录':'还没有'+name,items.length?'调整搜索词或状态筛选后重试。':['asset','cap'].includes(prefix)?'从右上角新建、登记或批量导入，保存后在这里继续维护。':description))+
       `<div class="nav-list-pagination"><span>共 ${filtered.length} 条 · 第 ${current+1} / ${lastPage+1} 页</span><div class="pz-actions">${btn('上一页','list-page',prefix+'|-1','sm',current===0)}${btn('下一页','list-page',prefix+'|1','sm',current===lastPage)}</div></div></section>`;
   }
-  function assetAction(a){const ref=a.flowRef||E.key(a),draft=['草稿','DRAFT'].includes(a.status);return a.kind==='case'?native(draft?'继续配置':'查看与维护','fl','case-open',ref,'ghost'):native(draft?'继续编辑':'查看与维护','v2',draft?'edit-asset':'asset',ref,'ghost');}
+  function flowCase(a){return a.kind==='case'&&a.config?.workspaceFormat!==1;}
+  function assetAction(a){const ref=a.flowRef||E.key(a),draft=['草稿','DRAFT'].includes(a.status);return flowCase(a)?native(draft?'继续配置':'查看与维护','fl','case-open',ref,'ghost'):native(draft?'继续编辑':'查看与维护','v2',draft?'edit-asset':'asset',ref,'ghost');}
   function assetColumns(a){
     if(a.kind==='case'){
+      if(!flowCase(a)){
+        const spec=a.config.actual;
+        return [h(spec.automation?.selector?'自动化已关联 · 待试跑':'人工执行'),h(spec.inline_expected?'按预期结果核对':'待选择评价方式')];
+      }
       const c=q().flow.cases.find(item=>item.key===(a.flowRef||E.key(a)));
       const methods=[...new Set((c?.rules||[]).map(rule=>EvaluationFlow.checks[rule.kind]?.method).filter(Boolean))];
       return [h(EvaluationFlow.methods[c?.method]||'待配置')+'<small>'+h(modeNames[c?.mode]||'待选择交互方式')+'</small>',h(methods.map(method=>({rule:'确定性检查',judge:'模型裁判',human:'人工复核'}[method]||method)).join(' + ')||'待配置')];
     }
     const actual=a.config?.actual;
-    if(a.kind==='dataset')return [h(String(a.contentSet?.member_kind==='case'?(a.contentSet.members?.length||0)+' 个用例版本':actual?.count||actual?.rows?.length||a.count||'待填写')),h(a.governanceDomain||'待选择')+' · '+(a.contentSet?.member_kind==='case'?'用例库':'样本集合')];
-    if(a.kind==='reference')return [h(String(actual?.rows?.length||a.count||'待填写')),h(a.assetSpec?.datasetRef||actual?.datasetRef||'在详情中核对配对')];
+    if(a.kind==='dataset')return [h(String(a.contentSet?.member_kind==='case'?(a.contentSet.members?.length||0)+' 个用例版本':actual?.samples?.length||actual?.count||actual?.rows?.length||a.count||'待填写')),h(a.governanceDomain||'待选择')+' · '+(a.contentSet?.member_kind==='case'?'用例库':'样本集合')];
+    if(a.kind==='reference')return [h(String(actual?.records?.length||actual?.rows?.length||a.count||'待填写')),h(a.assetSpec?.datasetRef||actual?.dataset_ref||actual?.datasetRef||'在详情中核对配对')];
     if(a.kind==='suite')return [h(String(actual?.cases?.length?actual.cases.length+' 个用例':a.count||'待装配')),a.status==='已发布'?'固定依赖版本':'依赖待检查'];
     return [h(a.targets?.join(' / ')||'待明确'),h(a.governance?.validation?.evidence?.id||'待验证')];
   }
@@ -404,7 +409,7 @@
   searchResults=function(query){
     const text=query.trim().toLowerCase(),matches=value=>String(value).toLowerCase().includes(text);
     const pageRows=navGroups.flatMap(g=>g.items).filter(([id,name])=>matches(name)).map(([id,name])=>link('页面 · '+name,id));
-    const assetRows=projectAssets().filter(a=>matches(a.name+' '+a.id)).map(a=>a.kind==='case'?native('用例 · '+h(a.name)+' · '+h(a.flowRef),'fl','case-open',a.flowRef):native(typeName(a.kind)+' · '+h(a.name)+' · '+h(E.key(a)),'v2','asset',E.key(a)));
+    const assetRows=projectAssets().filter(a=>matches(a.name+' '+a.id)).map(a=>flowCase(a)?native('用例 · '+h(a.name)+' · '+h(a.flowRef),'fl','case-open',a.flowRef):native(typeName(a.kind)+' · '+h(a.name)+' · '+h(E.key(a)),'v2','asset',E.key(a)));
     const taskRows=projectTasks().filter(t=>matches(t.name+' '+t.id)).map(t=>btn('任务 · '+h(t.name)+' · '+h(t.id),'task',t.id));
     const workRows=registry().db.works.filter(w=>w.id!=='CW-028'&&matches(w.title+' '+w.id)).map(w=>btn('协作 · '+h(w.title),'search-work',w.id));
     return `<div class="nav-search-results">${[...pageRows,...assetRows,...taskRows,...workRows].slice(0,30).join('')||'<p>没有匹配的项目记录。业务示例请从“示例中心”打开。</p>'}</div>`;

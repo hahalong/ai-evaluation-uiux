@@ -2,7 +2,7 @@
 (function(root,factory){const api=factory();if(typeof module==='object')module.exports=api;else root.EvaluationCore=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
  const clone=x=>JSON.parse(JSON.stringify(x));
  const key=a=>a.id+'@'+a.version;
- function digest(a){const s=JSON.stringify([a.name,a.source,a.targets,a.content,a.caseSpec,a.assetSpec,a.config,a.governanceDomain,a.contentSet]);let h=2166136261;for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return (h>>>0).toString(16);}
+ function digest(a){const s=JSON.stringify([a.name,a.source,a.targets,a.content,a.caseSpec,a.assetSpec,a.config,a.governanceDomain,a.contentSet,...(a.config?.workspaceFormat===1?[a.owner,a.description,a.tags,a.visibility,a.purpose]:[])]);let h=2166136261;for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return (h>>>0).toString(16);}
  const domains=['开发','回归','盲测','长尾对抗','留出'];
  const lifecycleOf=s=>s==='已发布'?'PUBLISHED':s==='待准入'||s==='待审核'?'REVIEW':'DRAFT';
  function directoryStatus(g){return g.availability==='RETIRED'?'归档':g.availability==='SUSPENDED'?'停用':g.lifecycle==='PUBLISHED'?'已发布':['VALIDATING','REVIEW'].includes(g.lifecycle)?'待准入':'草稿';}
@@ -43,7 +43,7 @@
   }
   function edit(a,patch){if(digest({...a,...patch})===digest(a))return a;if(a.governance.lifecycle==='PUBLISHED'||a.governance.history.some(x=>['专家确认','审核发布','技术确认','业务确认','双人确认发布'].includes(x.action)))return revise(a,patch);const prior=digest(a);Object.assign(a,patch);if(prior!==digest(a)){a.governance.validation=null;a.governance.expert=null;a.governance.reviewer=null;a.governance.technical=null;a.governance.business=null;a.governance.status='草稿';a.governance.lifecycle='DRAFT';event(a,'修改草稿','工程师');}return a;}
   function validate(a,checks){if(a.governance.lifecycle==='PUBLISHED')return a.governance.validation;const layers=layerNames.map((name,i)=>({name,ok:!!checks[i]?.ok,detail:checks[i]?.detail||'尚未验证'}));a.governance.validation={at:now(),digest:digest(a),layers,evidence:null};a.governance.expert=null;a.governance.reviewer=null;a.governance.technical=null;a.governance.business=null;a.governance.status='草稿';a.governance.lifecycle=layers.slice(0,2).every(x=>x.ok)?'VALIDATING':'DRAFT';event(a,'内容与引用检查','工程师');return a.governance.validation;}
-  function evidence(a,report){const v=a.governance.validation;if(!v||v.digest!==digest(a)||!v.layers[0].ok||!v.layers[1].ok)throw Error('内容或引用检查未通过，请先修复列出的缺口。');if(!report?.demo||report.digest!==digest(a)||!report.cases?.length||report.cases.some(x=>x.actual!==x.expected))throw Error('验证证据不匹配当前版本，或检查未通过，请重新运行验证。');v.evidence=clone(report);v.layers[2]={name:layerNames[2],ok:true,detail:'开发回放接口与配置检查通过；真实服务未接入'};v.layers[3]={name:layerNames[3],ok:true,detail:'正例、负例与缺证检查通过；资格仅限开发回放'};event(a,'开发验证','工程师',report.id);return v;}
+  function evidence(a,report){const v=a.governance.validation;if(!v||v.digest!==digest(a)||!v.layers[0].ok||!v.layers[1].ok)throw Error('内容或引用检查未通过，请先修复列出的缺口。');if(!report?.demo||report.digest!==digest(a)||!report.cases?.length||report.cases.some(x=>x.actual!==x.expected))throw Error('验证证据不匹配当前版本，或检查未通过，请重新运行验证。');v.evidence=clone(report);v.layers[2]={name:layerNames[2],ok:true,detail:'开发回放接口与配置检查通过；真实服务未接入'};v.layers[3]={name:layerNames[3],ok:true,detail:'正例、负例与缺证检查通过；资格仅限开发回放'};if(report.kind==='CONTENT_CONTRACT'){v.layers[2].detail='内容读取与记录格式通过';v.layers[3].detail='缺字段与重复数据校验通过；自动化运行尚未验证';}event(a,'开发验证','工程师',report.id);return v;}
   function ready(a){return a.validated&&!a.governance.disabled;}
   function submit(a){if(!ready(a))throw Error('四层检查尚未完成，请先打开验证结果并补齐缺口。');a.governance.status='待准入';a.governance.lifecycle='REVIEW';a.governance.assignee=ordinary(a)?'engineer':'expert';event(a,ordinary(a)?'提交确认':'提交审核','工程师');return a;}
   function expert(a,actor){if(ordinary(a))throw Error('普通资产须由业务与评测负责人双人确认，不使用旧专家审批流程。');if(a.governance.lifecycle!=='REVIEW'||!ready(a))throw Error('当前版本尚未完成验证并提交审核。');a.governance.expert={actor,digest:digest(a),at:now()};a.governance.assignee='quality';a.governance.assigneeName=null;event(a,'专家确认',actor);return a;}
@@ -70,7 +70,7 @@
    function walk(k){
     if(visiting.has(k)){gaps.push('依赖存在循环：'+k);return;}if(seen.has(k))return;
     const a=find(k);if(!a||key(a)!==k){gaps.push('精确版本不存在：'+k);return;}
-    visiting.add(k);seen.add(k);resolved.push(a);const g=a.governance;
+    visiting.add(k);seen.add(k);resolved.push(a);const g=a.governance;if(a.config?.workspaceFormat===1)gaps.push(a.name+'已保存内容；需在当前执行器完成输入映射与试跑后才能自动执行');
     if(g.lifecycle!=='PUBLISHED')gaps.push(a.name+'尚未发布');
     if(g.availability!=='ACTIVE')gaps.push(a.name+'已'+(g.availability==='RETIRED'?'归档':'停用'));
     if(!a.validated||!g.validation?.evidence||g.scope!==t.executionScope||(g.qualificationExpiresAt&&Date.parse(g.qualificationExpiresAt)<=Date.now()))gaps.push(a.name+'资格无效或超出范围');
