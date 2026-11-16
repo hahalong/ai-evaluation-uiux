@@ -24,6 +24,49 @@ const CaseImport=(()=>{
  function validateBindings(c,entry){const errs=[];if(c.execution_mode==='manual')return errs;if(!c.binding||!entry)return ['未关联可用自动化入口'];if(c.binding.program_version!==entry.program_version||c.binding.selector!==entry.selector)errs.push('自动化固定版本或入口不一致');for(const p of entry.parameters||[])if(p.required&&!c.binding.parameter_mapping.some(m=>m.target===p.key&&m.source))errs.push('缺少参数：'+p.key);for(const m of c.binding.parameter_mapping||[]){if(!m.source.startsWith('inputs.')){errs.push('执行参数只能读取评测输入：'+m.target);continue;}const v=m.source.slice(7).split('.').reduce((o,k)=>o?.[k],inputObject(c));if(v===undefined||v===null||v==='')errs.push('输入来源没有值：'+m.source);else{const p=entry.parameters?.find(p=>p.key===m.target),t=p?.type;if(t&&(['text','string'].includes(t)?typeof v!=='string':t==='number'?typeof v!=='number':t==='boolean'?typeof v!=='boolean':false))errs.push('参数类型不匹配：'+m.target);}}return errs;}
  function importEntries(matrix,program,namespace=''){const h=matrix[0]||[],idx=k=>h.indexOf(k);if(idx('自动化入口')<0||idx('来源用例编号')<0)throw Error('关联表需要“来源用例编号”和“自动化入口”列');const seen=new Map(),entries=[];matrix.slice(1).forEach((r,i)=>{if(!r.some(Boolean))return;const selector=String(r[idx('自动化入口')]||'').trim(),ns=String(r[idx('来源范围')]||namespace).trim(),id=String(r[idx('来源用例编号')]||'').trim();if(!selector||!id||!ns)throw Error('第'+(i+2)+'行缺少来源范围、来源用例编号或自动化入口');const key=ns+':'+id;if(seen.has(key)){if(seen.get(key)!==selector)throw Error('第'+(i+2)+'行同一业务用例对应多个入口：'+key+'；请明确选择参数实例');return;}seen.set(key,selector);entries.push({selector,program_version:program,title:String(r[idx('用例名称')]||selector),case_refs:[key],parameters:[]});});return entries;}
  function toDraft(c){const d=AssetCatalog.create('case');d.name=c.title;d.source=c.source_namespace+' / '+(c.source_case_id||'原行'+c.source_rows.join(','));d.spec={...d.spec,...(c.base_spec||{}),objective:c.objective||c.title,source_case_id:c.source_case_id,source_namespace:c.source_namespace,source_rows:c.source_rows,execution_mode:c.execution_mode,object_type:c.object_type||c.base_spec?.object_type||'agent',case_elements:c.case_elements??c.base_spec?.case_elements??[],interaction_stop:c.requirements?.interaction_stop??c.base_spec?.interaction_stop??'',initial_state:c.requirements?.initial_state??c.base_spec?.initial_state??'',state_observation:c.requirements?.state_observation??c.base_spec?.state_observation??'',forbidden_effects:c.requirements?.forbidden_effects!==undefined?c.requirements.forbidden_effects.split('\n').filter(x=>x.trim()):c.base_spec?.forbidden_effects||[],cleanup:c.requirements?.cleanup!==undefined?c.requirements.cleanup.split('\n').filter(x=>x.trim()):c.base_spec?.cleanup||[],source_snapshot:c.source_snapshot||{},manual_steps:c.steps.map(s=>({step_id:s.step_id,action_text:s.action})),inline_inputs:c.base_spec?.inline_inputs|| (c.input?{text:c.input}:{}),inline_expected:{...(c.base_spec?.inline_expected||{}),steps:c.steps.map(s=>({step_id:s.step_id,text:s.expected}))},preconditions:c.preconditions?c.preconditions.split('\n').filter(x=>x.trim()):[],priority:c.priority,tags:c.tags?c.tags.split(/[,，;；]/).map(s=>s.trim()):[],steps:c.base_spec?.steps||[],metric_versions:c.base_spec?.metric_versions||[],automation:c.binding||{}};return d;}
- return {fields,parse,guess,normalize,match,bind,inputObject,inputSources,validateBindings,importEntries,toDraft};
+ function discoverEntries(source,file,program){
+  const text=String(source??'');
+  const code=text.trim();
+  if(!code||!program)throw Error('请选择程序版本，并上传或粘贴测试源码或入口清单。');
+  if(/^[\[{]/.test(code)||/\.json$/i.test(file)){
+   let manifest;
+   try{manifest=JSON.parse(code);}catch{throw Error('入口清单格式有误，请检查 JSON。');}
+   const rows=Array.isArray(manifest)?manifest:manifest?.entries;
+   if(!Array.isArray(rows)||!rows.length)throw Error('入口清单需要包含至少一个测试入口。');
+   const occupied=new Set();
+   return rows.map((row,index)=>{
+    const selector=typeof row?.selector==='string'?row.selector.trim():'';
+    if(!selector||occupied.has(selector))throw Error(`第 ${index+1} 条入口缺失或重复。`);
+    occupied.add(selector);
+    const parameters=row.parameters??[];
+    if(!Array.isArray(parameters)||parameters.some(p=>typeof p?.key!=='string'||!p.key.trim()))throw Error(`第 ${index+1} 条入口的参数定义有误。`);
+    return {selector,program_version:program,title:typeof row.title==='string'&&row.title.trim()||selector.split('::').at(-1),
+     parameter_label:typeof row.parameter_label==='string'?row.parameter_label:'',
+     case_refs:Array.isArray(row.case_refs)?row.case_refs.filter(x=>typeof x==='string'&&x.trim()):[],
+     parameters:parameters.map(p=>({key:p.key.trim(),required:p.required===true,type:typeof p.type==='string'?p.type:''}))};
+   });
+  }
+  // Read only the supported pytest declaration form. Parameterized entries use the manifest.
+  const unquoted=text.replace(/#[^\r\n]*|'''[\s\S]*?(?:'''|$)|"""[\s\S]*?(?:"""|$)|'(?:\\.|[^'\\\r\n])*'|"(?:\\.|[^"\\\r\n])*"/g,
+   value=>value.replace(/[^\r\n]/g,' '));
+  const entries=[];
+  const names=new Set();
+  let decorator=false;
+  for(const [index,line] of unquoted.split(/\r?\n/).entries()){
+   if(!line.trim()||/^\s/.test(line))continue;
+   if(line.startsWith('@')){decorator=true;continue;}
+   if(decorator&&/^\)/.test(line))continue;
+   const name=/^(?:async\s+)?def\s+(test_\w+)\s*\(\s*\)\s*(?:->\s*None\s*)?:/.exec(line)?.[1];
+   if(name&&!decorator){
+    if(names.has(name))throw Error(`第 ${index+1} 行测试入口 ${name} 重复。`);
+    names.add(name);
+    entries.push({selector:`${file||'test_import.py'}::${name}`,title:name,program_version:program,case_refs:[],parameters:[],line:index+1});
+   }
+   decorator=false;
+  }
+  if(!entries.length)throw Error('未识别到顶层无参 pytest 测试函数。带参数、装饰器或类内的用例请使用入口清单。');
+  return entries;
+ }
+ return {fields,parse,guess,normalize,match,bind,inputObject,inputSources,validateBindings,importEntries,discoverEntries,toDraft};
 })();
 if(typeof module!=='undefined')module.exports=CaseImport;

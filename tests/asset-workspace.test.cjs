@@ -1,5 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const Core=require('../dist/evaluation-core'),T=require('../dist/asset-workspace-transfer'),V=require('../dist/asset-workspace-validation');
+const Import=require('../dist/asset-workspace/case-import');
 function sample(){return {data:{id:'D1',name:'PDF问答',owner:'p1',source:'问题表.xlsx',definition:{id:'schema1',version:1,unit:'一次提问',fields:[{key:'question',role:'input',type:'text',required:true},{key:'gold',role:'reference',type:'text'}]},mapping:[],records:[{sample_id:'S1',inputs:{question:'问题'},metadata:{},expected:{gold:'独立答案'},reference_id:'R1'}],formValues:{gold:'独立答案'},sourceText:'问题,独立答案'},checkpoint:{state:{files:[]}}};}
 function pub(c,a){c.validate(a,[0,1,2,3].map(()=>({ok:true})));a.governance.lifecycle='PUBLISHED';}
 test('dataset and reference split; no editing snapshot or expected leaks into execution payload',()=>{const c=Core.create({}),r=T.commit(c,sample(),'dataset');const ds=r.saved[0].asset,ref=r.saved[1].asset;assert(!JSON.stringify(ds).includes('独立答案'));assert.equal(ref.config.actual.records[0].expected.gold,'独立答案');assert.equal(ref.config.actual.dataset_ref,Core.key(ds));assert.equal(ds.config.referenceVersion,Core.key(ref));});
@@ -36,4 +37,23 @@ test('case editor receives a save confirmation only for a registered draft',()=>
  assert.equal(posts.at(-1).ok,false);
  assert.match(posts.at(-1).message,/已有新修改/);
  assert.equal(saved.name,'另一个会话的修改');
+});
+test('automation discovery reads supported declarations only and preserves manifest instances',()=>{
+ const python=[
+  '"""Example', 'def test_documentation():', '"""',
+  '@pytest.mark.parametrize("x", [1, 2])', 'def test_parameterized(x):', '    assert x',
+  'def test_voltage() -> None:', '    assert 12 > 0',
+  'class TestNested:', '    def test_nested(self):', '        pass',
+ ].join('\n');
+ const program='EXEC@r3';
+ const [entry]=Import.discoverEntries(python,'tests/test_power.py',program);
+ assert.equal(entry.selector,'tests/test_power.py::test_voltage');
+ assert.equal(entry.program_version,program);
+ assert.equal(entry.line,7);
+ assert.equal(Import.discoverEntries(python,'tests/test_power.py',program).length,1);
+ const instances=['low','high'].map(level=>({selector:`test_power.py::test_voltage[${level}]`,parameters:[{key:'voltage',required:true,type:'number'}]}));
+ const entries=Import.discoverEntries(JSON.stringify({entries:instances}),'tests.json',program);
+ assert.deepEqual(entries.map(e=>e.selector),instances.map(e=>e.selector));
+ assert.deepEqual(entries.map(e=>e.parameters),instances.map(e=>e.parameters));
+ assert.throws(()=>Import.discoverEntries(JSON.stringify([instances[0],instances[0]]),'tests.json',program),/重复/);
 });

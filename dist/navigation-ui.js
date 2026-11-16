@@ -111,8 +111,9 @@
   function assetColumns(a){
     if(a.kind==='case'){
       if(!flowCase(a)){
-        const spec=a.config.actual;
-        return [h(spec.automation?.selector?'自动化已关联 · 待试跑':'人工执行'),h(spec.inline_expected?'按预期结果核对':'待选择评价方式')];
+        const spec=a.config.actual||{},expected=spec.inline_expected||{};
+        const hasCriterion=spec.metric_versions?.length||expected.steps?.some(step=>step.text?.trim())||Object.keys(expected).some(key=>key!=='steps');
+        return [h(spec.automation?.selector?'自动化已关联 · 待试跑':'人工执行'),h(hasCriterion?'按预期或指标核对':'待补判定条件')];
       }
       const c=q().flow.cases.find(item=>item.key===(a.flowRef||E.key(a)));
       const methods=[...new Set((c?.rules||[]).map(rule=>EvaluationFlow.checks[rule.kind]?.method).filter(Boolean))];
@@ -136,7 +137,7 @@
     const name=kind==='case'?'用例':typeName(kind);
     return page('资产中心','维护可复用资产；发布后的固定版本可以直接加入评测任务。',
       `<div class="nav-directory">${categories}${types}${body}</div>`+(kind==='case'&&!isExample()?(MultiEnvUI.assetEntry()||''):'')+(!isExample()?examplesLink():''),
-      `<div class="nav-create-actions">${btn((technical?'登记':'新建')+h(name),'new-asset',kind,'primary')}${btn('批量导入','import',kind)}</div>`+FlowUI.contextReturn());
+      `<div class="nav-create-actions">${btn((technical?'登记':'新建')+h(name),'new-asset',kind,'primary')}${btn('批量导入','import',kind)}${kind==='case'?btn('从自动化导入','case-code',kind):''}</div>`+FlowUI.contextReturn());
   }
   function capabilityList(kind,prefix='cap'){
     const assets=(isExample()?allAssets().filter(seedAsset):projectAssets()).filter(a=>a.kind===kind);
