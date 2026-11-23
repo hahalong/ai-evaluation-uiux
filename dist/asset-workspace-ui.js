@@ -24,14 +24,14 @@
   session.checkpoint=payload.checkpoint;save();const current=stamps(session.map);for(const [sid,stamp] of Object.entries(session.stamps||{}))if(JSON.stringify(current[sid])!==JSON.stringify(stamp))throw Error('这个资产已有新修改。当前填写已暂存，请回列表重新打开最新版本后核对。');
   const result=bridge.commit(EvalUI.core,payload,session.kind,session.map);session.map=result.map;session.stamps=stamps(session.map);session.saved=result.saved.map(x=>EvaluationCore.key(x.asset));
   const primary=result.saved.filter(x=>x.asset.kind===session.kind).map(x=>x.asset);
-  if(primary.length===1&&session.context){const task=S.evalTasks.find(t=>t.id===session.context.taskId),dep=task?.deps?.find(d=>d.key===session.context.depKey);if(dep)EvalUI.core.bind(task,primary[0],dep);}
+  if(primary.length===1&&session.context&&!session.context.p02){const task=S.evalTasks.find(t=>t.id===session.context.taskId),dep=task?.deps?.find(d=>d.key===session.context.depKey);if(dep)EvalUI.core.bind(task,primary[0],dep);}
   EvalUI.commit();save();
   const message=primary.length?'已保存 '+primary.length+' 个'+names[session.kind]+'草稿':'填写进度已保存';
   if(intent==='return'){back();toast(message);}
   else if(intent==='review'&&primary.length){back();EvalUI.assetDetail(primary[0]);if(primary.length>1)toast('已保存全部用例；先查看第一条，其余可在用例列表继续检查。');}
   else{const el=document.getElementById('asset-workspace-feedback');if(el)el.textContent=message+' · 可继续编辑';}
  }
- pages['asset-workspace']=()=>{if(!session)return '<p>请选择需要编辑的资产。</p>';return `<div class="aw-shell"><header class="aw-heading"><div><small>资产中心 / ${h(names[session.kind])}</small><h1>${session.intent==='code'?'从自动化导入':session.intent==='import'?'导入':'编辑'}${h(names[session.kind])}</h1></div><div><button class="btn" data-aw="return">保存并返回${session.context?'原评测任务':'原列表'}</button><button class="btn primary" data-aw="save">保存草稿</button></div></header><div id="asset-workspace-feedback" role="status">${session.saved.length?'已保存草稿，可继续编辑':'填写进度自动保留'}</div><iframe id="asset-workspace-frame" title="${h(names[session.kind])}编辑区" src="./asset-workspace/index.html?v=r10.4"></iframe></div>`;};
+ pages['asset-workspace']=()=>{if(!session)return '<p>请选择需要编辑的资产。</p>';return `<div class="aw-shell"><header class="aw-heading"><div><small>资产中心 / ${h(names[session.kind])}</small><h1>${session.intent==='code'?'从自动化导入':session.intent==='import'?'导入':'编辑'}${h(names[session.kind])}</h1></div><div><button class="btn" data-aw="return">保存并返回${session.context?'原评测任务':'原列表'}</button><button class="btn primary" data-aw="save">保存草稿</button></div></header><div id="asset-workspace-feedback" role="status">${session.saved.length?'已保存草稿，可继续编辑':'填写进度自动保留'}</div><iframe id="asset-workspace-frame" title="${h(names[session.kind])}编辑区" src="./asset-workspace/index.html?v=r11.1"></iframe></div>`;};
  // Capture before existing document handlers; other asset types retain their established editor.
  window.addEventListener('click',e=>{const b=e.target.closest?.('[data-aw],[data-dir],[data-v2],[data-action]');if(!b)return;
   if(b.dataset.aw){e.preventDefault();e.stopImmediatePropagation();if(b.dataset.aw==='resume')resume(b.dataset.key);else send('request-save',{intent:b.dataset.aw==='return'?'return':'save'});return;}

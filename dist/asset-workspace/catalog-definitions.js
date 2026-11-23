@@ -650,7 +650,7 @@ const AssetDefinitions=[
   },
   {
     "key": "simulator",
-    "label": "模拟用户",
+    "label": "用户模拟器",
     "role": "平台研发",
     "material": "收到什么事件后回复什么、何时停止的脚本",
     "fields": [
