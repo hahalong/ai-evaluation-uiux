@@ -7,7 +7,7 @@
       "version": "V2.4",
       "source_file": "AI评测平台概要设计说明书_V2.4.html",
       "source_sha256": "e35c014fd853d402b49c89870d8eb63fd121b60f75017302bfe2ad73dcdd1857",
-      "published_sha256": "44bc90ac2f6a6e9a13d7327ee3a22e17fff8bf26333b79f3744bb4a02567be8a"
+      "published_sha256": "96ab3f5b7fc15024f98738b35ec708209e8b948ddc78e8bc33e6ed3480c01dc7"
     },
     {
       "page": "index.html",
@@ -15,7 +15,7 @@
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
       "source_sha256": "c99f86df745b033fe919ec7a1050d37a4d747f3c6394b1b45e21e94e6b5e779b",
-      "published_sha256": "7be5cc13c63a3085ee032b96eb959402b55bc10e80d298f3386d76fbbd32ed7b"
+      "published_sha256": "0627eac308f63955607a85127aa642a9f3d4cff466efb061c42a12babd6e9717"
     },
     {
       "page": "tasks.html",
@@ -23,7 +23,7 @@
       "version": "V1.2",
       "source_file": "AI评测平台开发任务拆分_V1.2.html",
       "source_sha256": "ede0964412b9a3284bf9235b83d8653001f92ca870e6c97150c34fd393408fdb",
-      "published_sha256": "0bc54e2ebb6db9e25c8c8c8ecd4893a9902c8142eaf5b8dad177d64cfb9896c3"
+      "published_sha256": "cffbc115de1ca31a4e35f88c67ba9da9ac3544171da5d1e779cfb088d6facb92"
     },
     {
       "page": "review.html",
@@ -31,40 +31,40 @@
       "version": "V1.2",
       "source_file": "AI评测平台需求澄清与评审记录_V1.2.html",
       "source_sha256": "dc729b40e47cc6c55cdd8190cc425738bda6c4230897cef574f3ef1e2f56e60a",
-      "published_sha256": "e7c6e803bfd714e83bdb2f545922f459339dabca158a443f50e5af8a653992bc"
+      "published_sha256": "fd89686ecf71e4f7cfa2f9d3d15729776adb577b1de5925d9b9f2a764dc60ea0"
     }
   ],
   "checks": [
     {
       "page": "index.html",
-      "bytes": 927884,
+      "bytes": 775148,
       "svg": 17,
       "anchors_and_local_links": "passed"
     },
     {
       "page": "review.html",
-      "bytes": 27502,
+      "bytes": 27438,
       "svg": 0,
       "anchors_and_local_links": "passed"
     },
     {
       "page": "tasks.html",
-      "bytes": 135502,
+      "bytes": 66020,
       "svg": 0,
       "anchors_and_local_links": "passed"
     },
     {
       "page": "documents.html",
-      "bytes": 3461,
+      "bytes": 3065,
       "svg": 0,
       "anchors_and_local_links": "passed"
     },
     {
       "page": "overview.html",
-      "bytes": 1299491,
+      "bytes": 352172,
       "svg": 29,
       "anchors_and_local_links": "passed"
     }
   ],
-  "download_sha256": "54ae53aa1afe6ddff84b0c9cdd5d56d55208ad26d71b69deee0d89410e0595bc"
+  "publication_policy": "在线阅读；不提供附件、CSV、图源或打包下载入口。公开网页及Git历史不提供防保存保证。"
 }
