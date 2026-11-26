@@ -7,7 +7,7 @@
       "version": "V2.4",
       "source_file": "AI评测平台概要设计说明书_V2.4.html",
       "source_sha256": "e35c014fd853d402b49c89870d8eb63fd121b60f75017302bfe2ad73dcdd1857",
-      "published_sha256": "96ab3f5b7fc15024f98738b35ec708209e8b948ddc78e8bc33e6ed3480c01dc7"
+      "published_sha256": "b0068996ffc0ae3777a062f37cf5530e97611e5adbc739889cda2e51e39da1d4"
     },
     {
       "page": "index.html",
@@ -15,7 +15,7 @@
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
       "source_sha256": "32d8a5a92a0d7a38af3ecbfa742f0b606d21abf15678c44b68bd8bce14f1e191",
-      "published_sha256": "6dfe1e7032e1a17faa4de90e730101ffb062d87d3b80681d0971db0ea6f1ea27"
+      "published_sha256": "af94362691a31a028ff3879da56e303ffb0ab2c2e842bdb5d66a5bf539db47f3"
     },
     {
       "page": "tasks.html",
@@ -23,7 +23,7 @@
       "version": "V1.2",
       "source_file": "AI评测平台开发任务拆分_V1.2.html",
       "source_sha256": "ede0964412b9a3284bf9235b83d8653001f92ca870e6c97150c34fd393408fdb",
-      "published_sha256": "cffbc115de1ca31a4e35f88c67ba9da9ac3544171da5d1e779cfb088d6facb92"
+      "published_sha256": "0f8a65f100f34fa24e7ca367ac64d7019f72f515f9383444d4c76471ff8d3189"
     },
     {
       "page": "review.html",
@@ -31,39 +31,59 @@
       "version": "V1.2",
       "source_file": "AI评测平台需求澄清与评审记录_V1.2.html",
       "source_sha256": "dc729b40e47cc6c55cdd8190cc425738bda6c4230897cef574f3ef1e2f56e60a",
-      "published_sha256": "fd89686ecf71e4f7cfa2f9d3d15729776adb577b1de5925d9b9f2a764dc60ea0"
+      "published_sha256": "c474bf5fa24e887c9d196c1afe177b44383fd9b4473d93dff334d1534b411806"
+    },
+    {
+      "page": "engineering.html",
+      "title": "技术栈与开发规范",
+      "version": "V1.0",
+      "source_file": "docs/engineering-baseline/技术栈基线与开发规范.md",
+      "source_sha256": "89d4b97bbfc2ea915d1fa8af898e19e95c77f4bf363c59ee3469f8fb7021e784",
+      "published_sha256": "cefac2a15a25c4bcb06910c9644b639defb57087575b6e97b494ad2405206589"
     }
   ],
   "checks": [
     {
       "page": "index.html",
-      "bytes": 930572,
+      "bytes": 933234,
       "svg": 17,
-      "anchors_and_local_links": "passed"
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
     },
     {
       "page": "review.html",
-      "bytes": 27438,
+      "bytes": 30086,
       "svg": 0,
-      "anchors_and_local_links": "passed"
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
     },
     {
       "page": "tasks.html",
-      "bytes": 66020,
+      "bytes": 68858,
       "svg": 0,
-      "anchors_and_local_links": "passed"
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
     },
     {
       "page": "documents.html",
-      "bytes": 3083,
+      "bytes": 3438,
       "svg": 0,
-      "anchors_and_local_links": "passed"
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
     },
     {
       "page": "overview.html",
-      "bytes": 352172,
+      "bytes": 353217,
       "svg": 29,
-      "anchors_and_local_links": "passed"
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
+    },
+    {
+      "page": "engineering.html",
+      "bytes": 45556,
+      "svg": 0,
+      "anchors_and_local_links": "passed",
+      "no_download_controls": "passed"
     }
   ],
   "publication_policy": "在线阅读；不提供附件、CSV、图源或打包下载入口。公开网页及Git历史不提供防保存保证。",
@@ -76,5 +96,31 @@
     "original_CT_groups": 46,
     "modules": 16,
     "technical_questions": 6
+  },
+  "engineering_supplement": {
+    "date": "2026-11-26",
+    "sections": 16,
+    "external_questions": 7,
+    "work_packages": [
+      "WP-01",
+      "WP-02",
+      "WP-03",
+      "WP-04",
+      "WP-05",
+      "WP-37",
+      "WP-38",
+      "WP-39",
+      "WP-41",
+      "WP-44"
+    ],
+    "runtime_validation": "pending; documentation and template syntax checks only",
+    "validation": [
+      "all local links and anchors",
+      "unique ids",
+      "16 sections and 7 open questions",
+      "JSON template parsed",
+      "shell template bash -n",
+      "TOML parsed"
+    ]
   }
 }

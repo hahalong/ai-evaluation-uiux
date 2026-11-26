@@ -47,3 +47,5 @@ python3 -m http.server 8000 --directory dist
 推送到 `main` 后，现有 GitHub Actions 执行测试、恢复旧资源并发布 Pages。分片和引导包应随仓库一同保留。
 
 浏览器草稿保存在当前网页来源的 localStorage 中。原 Sites、本地预览和 GitHub Pages 的草稿不会自动迁移。
+
+- [技术栈基线与开发规范 V1.0](https://hahalong.github.io/ai-evaluation-uiux/design/engineering.html)：版本约束、代码边界、前后端规范、CI、Compose 发布与工作包验收。
