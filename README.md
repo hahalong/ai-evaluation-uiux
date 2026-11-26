@@ -5,6 +5,7 @@
 - 在线原型：[GitHub Pages](https://hahalong.github.io/ai-evaluation-uiux/)
 - 设计文档中心：[概要设计、详细设计、开发任务、需求澄清与评审记录](https://hahalong.github.io/ai-evaluation-uiux/design/documents.html)
 - 详细设计：[AI评测平台详细设计说明书 V1.2（ER修订版）](https://hahalong.github.io/ai-evaluation-uiux/design/)
+- 接口依赖清单：[逐接口清单与16模块索引](https://hahalong.github.io/ai-evaluation-uiux/design/#interface-directory)
 - 本次变更与检查：[R11 / R2.1 整合说明](docs/uiux-r11-r21-review.md)
 - 可维护源码：`dist/`，无需 npm 安装或编译。
 - 历史流程与 Demo：[完整评测流程_PRD补全](https://baic.feishu.cn/wiki/NGhXwwxLBiBJ4BkDZAHcYfwdndt)

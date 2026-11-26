@@ -14,8 +14,8 @@
       "title": "详细设计",
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
-      "source_sha256": "c99f86df745b033fe919ec7a1050d37a4d747f3c6394b1b45e21e94e6b5e779b",
-      "published_sha256": "0627eac308f63955607a85127aa642a9f3d4cff466efb061c42a12babd6e9717"
+      "source_sha256": "32d8a5a92a0d7a38af3ecbfa742f0b606d21abf15678c44b68bd8bce14f1e191",
+      "published_sha256": "6dfe1e7032e1a17faa4de90e730101ffb062d87d3b80681d0971db0ea6f1ea27"
     },
     {
       "page": "tasks.html",
@@ -37,7 +37,7 @@
   "checks": [
     {
       "page": "index.html",
-      "bytes": 775148,
+      "bytes": 930572,
       "svg": 17,
       "anchors_and_local_links": "passed"
     },
@@ -55,7 +55,7 @@
     },
     {
       "page": "documents.html",
-      "bytes": 3065,
+      "bytes": 3083,
       "svg": 0,
       "anchors_and_local_links": "passed"
     },
@@ -66,5 +66,15 @@
       "anchors_and_local_links": "passed"
     }
   ],
-  "publication_policy": "在线阅读；不提供附件、CSV、图源或打包下载入口。公开网页及Git历史不提供防保存保证。"
+  "publication_policy": "在线阅读；不提供附件、CSV、图源或打包下载入口。公开网页及Git历史不提供防保存保证。",
+  "interface_directory": {
+    "HTTP": 108,
+    "internal": 46,
+    "external_adapters": 9,
+    "events": 17,
+    "total_rows": 180,
+    "original_CT_groups": 46,
+    "modules": 16,
+    "technical_questions": 6
+  }
 }
