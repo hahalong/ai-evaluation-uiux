@@ -3,6 +3,7 @@
 当前界面为 **P01 R11 / P02 R2.1 整合版 · 2026.11.22**。基于原 UI/UX 页面、统一任务台账和资产中心更新，用于方案评审、操作演练与交互走查。
 
 - 在线原型：[GitHub Pages](https://hahalong.github.io/ai-evaluation-uiux/)
+- 设计文档中心：[概要设计、详细设计、开发任务、需求澄清与评审记录](https://hahalong.github.io/ai-evaluation-uiux/design/documents.html)
 - 详细设计：[AI评测平台详细设计说明书 V1.2（ER修订版）](https://hahalong.github.io/ai-evaluation-uiux/design/)
 - 本次变更与检查：[R11 / R2.1 整合说明](docs/uiux-r11-r21-review.md)
 - 可维护源码：`dist/`，无需 npm 安装或编译。
