@@ -15,7 +15,7 @@
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
       "source_sha256": "32d8a5a92a0d7a38af3ecbfa742f0b606d21abf15678c44b68bd8bce14f1e191",
-      "published_sha256": "af94362691a31a028ff3879da56e303ffb0ab2c2e842bdb5d66a5bf539db47f3"
+      "published_sha256": "3a316060501b25b770d7f9ab9710e2f766a789121e45434acc6e6a2141db7e1c"
     },
     {
       "page": "tasks.html",
@@ -45,7 +45,7 @@
   "checks": [
     {
       "page": "index.html",
-      "bytes": 933234,
+      "bytes": 1091514,
       "svg": 17,
       "anchors_and_local_links": "passed",
       "no_download_controls": "passed"
@@ -95,7 +95,13 @@
     "total_rows": 180,
     "original_CT_groups": 46,
     "modules": 16,
-    "technical_questions": 6
+    "technical_questions": 6,
+    "product_modules": 15,
+    "product_fields": [
+      "提供方产品模块",
+      "调用方产品模块"
+    ],
+    "updated": "2026-11-28"
   },
   "engineering_supplement": {
     "date": "2026-11-26",

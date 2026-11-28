@@ -1,0 +1,6039 @@
+{
+  "modules": [
+    "API接口",
+    "权限管理",
+    "资产管理",
+    "数据处理",
+    "方案管理",
+    "流程编排",
+    "任务调度",
+    "执行器",
+    "证据管理",
+    "自动评分",
+    "人工评测",
+    "结果与报告",
+    "消息与集成",
+    "AI助手",
+    "运维监控",
+    "参考数据管理"
+  ],
+  "rows": [
+    {
+      "id": "op001",
+      "kind": "HTTP",
+      "name": "读取登录主体与项目",
+      "operation": "GET /api/v1/session",
+      "providers": [
+        "API接口"
+      ],
+      "callers": [],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "后端校验OIDC签名/issuer/audience/过期；项目权限来自服务端，不能信任前端角色",
+      "refs": [
+        "CT01"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s104",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op002",
+      "kind": "HTTP",
+      "name": "新建资产草稿",
+      "operation": "POST /api/v1/assets",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "按kind选择字段Schema；草稿允许不完整；禁止直接发布",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s105",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op003",
+      "kind": "HTTP",
+      "name": "查询可见资产",
+      "operation": "GET /api/v1/assets",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "先鉴权再搜索、计数和分页；默认排除未采用系统示例",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s106",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08",
+        "P09",
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op004",
+      "kind": "HTTP",
+      "name": "保存草稿",
+      "operation": "PATCH /api/v1/assets/{id}/draft",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "CAS；相同内容不制造新版本；changes只允许该kind可编辑字段",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s107",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op005",
+      "kind": "HTTP",
+      "name": "生成不可变候选版本",
+      "operation": "POST /api/v1/assets/{id}/versions",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "依赖解析到精确版本，校验引用闭环与DAG无环",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s108",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op006",
+      "kind": "HTTP",
+      "name": "提交技术或业务确认",
+      "operation": "POST /api/v1/asset-versions/{id}/confirmations",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "确认同版本摘要，账号和person_key由SSO提供",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s109",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op007",
+      "kind": "HTTP",
+      "name": "发布固定资产",
+      "operation": "POST /api/v1/asset-versions/{id}/publish",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "同事务验证两位不同真实人员确认、资格、依赖、权限，写发布记录和Outbox",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s110",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op008",
+      "kind": "HTTP",
+      "name": "停用资产版本",
+      "operation": "POST /api/v1/asset-versions/{id}/disable",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "阻止新冻结；不删除历史引用或静默替换旧清单",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s111",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op009",
+      "kind": "HTTP",
+      "name": "提交资产导入",
+      "operation": "POST /api/v1/imports",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "202受理；限定大小/压缩比/编码；参考数据分流；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT03"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s112",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op010",
+      "kind": "HTTP",
+      "name": "查询逐行导入结果",
+      "operation": "GET /api/v1/imports/{id}",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "允许纠错后按稳定行键重试；成功行不重复创建",
+      "refs": [
+        "CT05"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s113",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op011",
+      "kind": "HTTP",
+      "name": "接收已有记录",
+      "operation": "POST /api/v1/record-imports",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "record_manifest含来源批次/对象证明/文件摘要/稳定样本关联；JUnit禁XXE；不造执行run；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT43"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s114",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op012",
+      "kind": "HTTP",
+      "name": "登记对象版本",
+      "operation": "POST /api/v1/objects",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "业务对象版本不可变；复制示例不复制确认/凭据/结果",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s115",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op013",
+      "kind": "HTTP",
+      "name": "登记接入版本",
+      "operation": "POST /api/v1/objects/{id}/access-profiles",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只登记配置；不能据声明直接获得资格",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s116",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op014",
+      "kind": "HTTP",
+      "name": "启动接入验证",
+      "operation": "POST /api/v1/access-profiles/{id}/validate",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "受控真实调用，六动作/错误/文件/终态/清理与隔离分项验证；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT16"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s117",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op015",
+      "kind": "HTTP",
+      "name": "统一需求受理",
+      "operation": "POST /api/v1/tasks",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "UI/API/CI共用入口；source_key幂等；创建默认方案草稿",
+      "refs": [
+        "CT11"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s118",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P09",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op016",
+      "kind": "HTTP",
+      "name": "查询任务台账",
+      "operation": "GET /api/v1/tasks",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "游标稳定排序；列表与详情使用同一状态投影",
+      "refs": [
+        "CT26"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s119",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op017",
+      "kind": "HTTP",
+      "name": "查询任务详情",
+      "operation": "GET /api/v1/tasks/{id}",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "分别显示流程/执行/评分/清理/质量/验收/费用状态",
+      "refs": [
+        "CT26"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s120",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op018",
+      "kind": "HTTP",
+      "name": "保存有效方案",
+      "operation": "PUT /api/v1/tasks/{task_id}/plan",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "按模板默认→任务覆盖解析；未改内容不增修订；前端不手工选择引擎",
+      "refs": [
+        "CT08"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s121",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P09",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op019",
+      "kind": "HTTP",
+      "name": "预检",
+      "operation": "POST /api/v1/plans/{id}/preflight",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "不执行对象；按路径检查引用/资格/权限/必要集合/预算/可观测能力",
+      "refs": [
+        "CT08"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s122",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P09",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op020",
+      "kind": "HTTP",
+      "name": "方案确认",
+      "operation": "POST /api/v1/plans/{id}/confirmations",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "身份和职责服务端核验；内容变化使旧确认失效",
+      "refs": [
+        "CT10"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s123",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op021",
+      "kind": "HTTP",
+      "name": "冻结",
+      "operation": "POST /api/v1/plans/{id}/freeze",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "锁方案行，重验当前资格和授权；清单/回执/Outbox同事务",
+      "refs": [
+        "CT10"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s124",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op022",
+      "kind": "HTTP",
+      "name": "启动冻结方案",
+      "operation": "POST /api/v1/tasks/{id}/starts",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "创建flow；仅实际执行创建run；B2费用预留同事务；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT11"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s125",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P09",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op023",
+      "kind": "HTTP",
+      "name": "请求取消",
+      "operation": "POST /api/v1/runs/{id}/cancel",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "阻止新动作；查在途动作；ACK不是终态；清理核实后才释放资源；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT17"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s126",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op024",
+      "kind": "HTTP",
+      "name": "恢复人工等待",
+      "operation": "POST /api/v1/runtime-checkpoints/{id}:resume",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "复验人员/摘要/当前租约；重复恢复回放原回执，不重做副作用；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT42"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s127",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op025",
+      "kind": "HTTP",
+      "name": "创建人工批次",
+      "operation": "POST /api/v1/review-batches",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "正式评分与校准参考用途区分；可以没有run；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT23"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s128",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P02",
+        "P06",
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op026",
+      "kind": "HTTP",
+      "name": "分配盲评",
+      "operation": "POST /api/v1/review-batches/{id}/assignments",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "至少两位不同person_key初评人；同项初评不得仲裁；冻结的仲裁与质量审核安排齐全",
+      "refs": [
+        "CT24"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s129",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op027",
+      "kind": "HTTP",
+      "name": "读取盲评材料",
+      "operation": "GET /api/v1/review-tasks/{id}",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "不返回对象身份、其他评审意见、被隐藏的自动分数或参考定位",
+      "refs": [
+        "CT19"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s130",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op028",
+      "kind": "HTTP",
+      "name": "保存/提交意见",
+      "operation": "POST /api/v1/review-tasks/{id}/opinions",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "允许草稿；提交后追加更正，不覆盖锁定意见",
+      "refs": [
+        "CT24"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s131",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op029",
+      "kind": "HTTP",
+      "name": "提交仲裁依据",
+      "operation": "POST /api/v1/review-batches/{id}/arbitrations",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "冲突标识/采用意见/独立仲裁人受规约约束；写入审计",
+      "refs": [
+        "CT24"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s132",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op030",
+      "kind": "HTTP",
+      "name": "锁定人评",
+      "operation": "POST /api/v1/review-batches/{id}/lock",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "至少两份独立初评、必要仲裁及当前selection_hash的抽检/质量审核齐全；写锁定结果和事件",
+      "refs": [
+        "CT24"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s133",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op031",
+      "kind": "HTTP",
+      "name": "发起裁判校准",
+      "operation": "POST /api/v1/scorers/{id}/calibrations",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "开发和封存验收划分隔离；评分身份按用途授权；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT35"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s134",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P01",
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op032",
+      "kind": "HTTP",
+      "name": "审批裁判资格",
+      "operation": "POST /api/v1/calibrations/{id}/qualification-decisions",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "不自动提升资格；独立审核；撤权影响新派工并记录历史结果影响",
+      "refs": [
+        "CT09"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s135",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P01",
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op033",
+      "kind": "HTTP",
+      "name": "读取统一结果",
+      "operation": "GET /api/v1/results/{snapshot_id}",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "页面/API/报告/CI引用同一snapshot；按当前权限裁剪证据下载",
+      "refs": [
+        "CT26"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s136",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op034",
+      "kind": "HTTP",
+      "name": "生成报告",
+      "operation": "POST /api/v1/results/{snapshot_id}/reports",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "按固定快照渲染；失败仅重试报告工作；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT27"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s137",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op035",
+      "kind": "HTTP",
+      "name": "记录业务验收",
+      "operation": "POST /api/v1/acceptance",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "业务决定不改质量结论，不构成外部发布授权",
+      "refs": [
+        "CT26"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。 业务验收不授予AI助手或集成模块自动代办权限。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s138",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op036",
+      "kind": "HTTP",
+      "name": "实验对比",
+      "operation": "POST /api/v1/comparisons",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "先核对对象/数据/规则/环境/样本集合；不可比给原因，不混算单个排名",
+      "refs": [
+        "CT25"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s139",
+      "product_providers": [
+        "P09"
+      ],
+      "product_callers": [
+        "P09"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op037",
+      "kind": "HTTP",
+      "name": "建立问题证据关联",
+      "operation": "POST /api/v1/diagnoses",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "事实与假设分开；AI建议不直接成为缺陷根因",
+      "refs": [
+        "CT31"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s140",
+      "product_providers": [
+        "P10"
+      ],
+      "product_callers": [
+        "P10"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op038",
+      "kind": "HTTP",
+      "name": "同步外部缺陷",
+      "operation": "POST /api/v1/issue-links",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "出站字段最小化；外部失败不阻断平台结果；外部状态权威；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT31"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s141",
+      "product_providers": [
+        "P10"
+      ],
+      "product_callers": [
+        "P10"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op039",
+      "kind": "HTTP",
+      "name": "持续评测订阅",
+      "operation": "POST /api/v1/subscriptions",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "触发重新预检/冻结，不沿用失效授权；去抖键不吞掉不同源版本",
+      "refs": [
+        "CT31"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s142",
+      "product_providers": [
+        "P11"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op040",
+      "kind": "HTTP",
+      "name": "受理外部事件",
+      "operation": "POST /api/v1/webhooks/{id}",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "验签、时钟窗、防重放、来源键幂等；签名机密单独保存；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT31"
+      ],
+      "note": "签名Webhook入口；不是浏览器登录用户接口。",
+      "external": [
+        "外部事件源（Webhook）"
+      ],
+      "status": "已有定义",
+      "target": "s143",
+      "product_providers": [
+        "P11"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op041",
+      "kind": "HTTP",
+      "name": "生成助手建议",
+      "operation": "POST /api/v1/proposals",
+      "providers": [
+        "AI助手"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "仅授权上下文；结构化diff；关闭助手不影响普通流程；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT32"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s144",
+      "product_providers": [
+        "P12"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op042",
+      "kind": "HTTP",
+      "name": "采纳建议到草稿",
+      "operation": "POST /api/v1/proposals/{id}/adopt",
+      "providers": [
+        "AI助手"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "以实际用户权限调用目标模块；不能直接发布/冻结/改正式结果",
+      "refs": [
+        "CT32"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s145",
+      "product_providers": [
+        "P12"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op043",
+      "kind": "HTTP",
+      "name": "预算与用量查询",
+      "operation": "GET /api/v1/budgets",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "未知费用为空并显式待核实；对象/裁判/embedding/模拟器分项",
+      "refs": [
+        "CT29"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s146",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P14"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op044",
+      "kind": "HTTP",
+      "name": "运行处置",
+      "operation": "POST /api/v1/operations",
+      "providers": [
+        "运维监控"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "运维权限与受控范围；通过责任模块命令，不直接UPDATE分数；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT34"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s147",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op045",
+      "kind": "HTTP",
+      "name": "查询异步操作",
+      "operation": "GET /api/v1/operations/{id}",
+      "providers": [
+        "API接口"
+      ],
+      "callers": [],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只返回项目和当前主体获准的操作",
+      "refs": [
+        "CT34"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s148",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P06",
+        "P07",
+        "P08",
+        "P10",
+        "P11",
+        "P12",
+        "P15"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P07",
+        "P08",
+        "P10",
+        "P11",
+        "P12",
+        "P15"
+      ],
+      "product_note": "跨产品异步操作查询：归属随operation的原始作业；不是全部归属P02或P15。"
+    },
+    {
+      "id": "op046",
+      "kind": "HTTP",
+      "name": "配置用途授权",
+      "operation": "POST /api/v1/permission-grants",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅项目授权管理员；不得授权超出自身允许范围",
+      "refs": [
+        "CT01"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s149",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op047",
+      "kind": "HTTP",
+      "name": "撤销授权",
+      "operation": "POST /api/v1/permission-grants/{id}/revoke",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "当前读写即时拒绝；事件只加速清理缓存和运行处置",
+      "refs": [
+        "CT01"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s150",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op048",
+      "kind": "HTTP",
+      "name": "审计检索",
+      "operation": "GET /api/v1/audit-events",
+      "providers": [
+        "运维监控"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只含摘要与trace；不含token/参考正文；导出单独权限",
+      "refs": [
+        "CT33"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s151",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op049",
+      "kind": "HTTP",
+      "name": "Worker领取",
+      "operation": "POST /internal/v1/work/claim",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "工作/资源原子领取；无匹配204；bundle按工作kind是执行/评分/导入/报告投影",
+      "refs": [
+        "CT13"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s152",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "通用工作生命周期属于P02调度运行；调用产品随IMPORT/EXECUTE/SCORE/REPORT等kind确定，不代表全部同时调用。"
+    },
+    {
+      "id": "op050",
+      "kind": "HTTP",
+      "name": "续租",
+      "operation": "POST /internal/v1/work/{id}/heartbeat",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只续当前持有者，序号递增；过期/被替代LEASE_FENCED",
+      "refs": [
+        "CT14"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s153",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "通用工作生命周期属于P02调度运行；调用产品随IMPORT/EXECUTE/SCORE/REPORT等kind确定，不代表全部同时调用。"
+    },
+    {
+      "id": "op051",
+      "kind": "HTTP",
+      "name": "登记动作意图",
+      "operation": "POST /internal/v1/actions/prepare",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "唯一键先落库；同键异意图409；权限和租约当前校验后才许可发送",
+      "refs": [
+        "CT15"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s154",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op052",
+      "kind": "HTTP",
+      "name": "回收动作事实",
+      "operation": "POST /internal/v1/actions/{id}/receipts",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "旧租约事实追加但不可推进当前流程；未知状态待核实",
+      "refs": [
+        "CT17"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s155",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op053",
+      "kind": "HTTP",
+      "name": "申请文件暂存",
+      "operation": "POST /internal/v1/uploads",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "URL仅写指定对象；限制大小和用途；不授予桶列举权",
+      "refs": [
+        "CT18"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s156",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "共享材料服务按资产上传P01、任务原始记录P02、证据追溯P08区分；主PRD未将全部原始记录指定给单一产品，技术写入责任不变。"
+    },
+    {
+      "id": "op054",
+      "kind": "HTTP",
+      "name": "提交材料",
+      "operation": "POST /internal/v1/evidence/commit",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "实测字节/hash/扫描通过再登记；来源同号异内容冲突",
+      "refs": [
+        "CT18"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s157",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "共享材料服务按资产上传P01、任务原始记录P02、证据追溯P08区分；主PRD未将全部原始记录指定给单一产品，技术写入责任不变。"
+    },
+    {
+      "id": "op055",
+      "kind": "HTTP",
+      "name": "按用途读取材料",
+      "operation": "POST /internal/v1/evidence/projections",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "校验工作/项目/用途，按执行/评分/报告裁剪；URL短期单对象",
+      "refs": [
+        "CT19"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s158",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op056",
+      "kind": "HTTP",
+      "name": "参考导入暂存",
+      "operation": "POST /internal/v1/references/stage",
+      "providers": [
+        "参考数据管理"
+      ],
+      "callers": [
+        "数据处理"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅IMPORT身份可写当前导入；暂存不允许读取全库",
+      "refs": [
+        "CT20"
+      ],
+      "note": "访问reference-api；使用参考用途身份。人工评测由服务端代理，执行器不在调用清单。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s159",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op057",
+      "kind": "HTTP",
+      "name": "按用途解析参考",
+      "operation": "POST /internal/v1/references/resolve",
+      "providers": [
+        "参考数据管理"
+      ],
+      "callers": [
+        "自动评分",
+        "人工评测"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "独立service audience；执行/助手身份拒绝；记录ALLOW/DENY审计",
+      "refs": [
+        "CT20"
+      ],
+      "note": "访问reference-api；使用参考用途身份。人工评测由服务端代理，执行器不在调用清单。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s160",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P06",
+        "P07"
+      ],
+      "product_note": "参考内容归P01资产；访问决策由P13协作提供。执行器不在调用方。"
+    },
+    {
+      "id": "op058",
+      "kind": "HTTP",
+      "name": "提交导入分片",
+      "operation": "POST /internal/v1/imports/{id}/rows:commit",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "数据处理"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "每行稳定row_key、payload_hash、sample/参考引用；批次授权；不直接发布",
+      "refs": [
+        "CT05"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s161",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op059",
+      "kind": "HTTP",
+      "name": "提交候选评分",
+      "operation": "POST /internal/v1/scores/commit",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "自动评分"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "核对固定指标/材料/资格；数值有限；结果与Outbox同事务",
+      "refs": [
+        "CT22"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s162",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op060",
+      "kind": "HTTP",
+      "name": "回收报告",
+      "operation": "POST /internal/v1/reports/commit",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "报告工作身份和快照/模板/权限范围匹配",
+      "refs": [
+        "CT27"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s163",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op061",
+      "kind": "HTTP",
+      "name": "引擎回执",
+      "operation": "POST /internal/v1/engine-invocations/{id}/receipts",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "执行器",
+        "自动评分"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "校验invocation→work_attempt→冻结绑定；显式engine_task_key乱序匹配；结果交所属模块",
+      "refs": [
+        "CT40"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。 IF-Q01：HTTP责任模块与CT40接收模块不一致。",
+      "external": [],
+      "status": "归属待明确",
+      "target": "s164",
+      "product_providers": [
+        "P02",
+        "P06"
+      ],
+      "product_callers": [
+        "P03",
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "product_note": "按执行回执/评分回执条件归P02/P06；技术接收责任仍存在IF-Q01，未因产品映射关闭。"
+    },
+    {
+      "id": "op062",
+      "kind": "HTTP",
+      "name": "保存执行检查点",
+      "operation": "POST /internal/v1/runtime-checkpoints",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "调度校验租约后调用编排Port保存控制检查点；任务调度不另写重复检查点",
+      "refs": [
+        "CT41"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s165",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op063",
+      "kind": "HTTP",
+      "name": "记录用量",
+      "operation": "POST /internal/v1/usage",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "来源键唯一；同号异内容409；未知费用不补零；冲正追加",
+      "refs": [
+        "CT29"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。 AI助手成本入账身份见IF-Q04。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s166",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "仅映射原清单四类Worker的用量用途；AI助手入账仍见CT29.1/IF-Q04。"
+    },
+    {
+      "id": "op064",
+      "kind": "HTTP",
+      "name": "核验后释放环境",
+      "operation": "POST /internal/v1/resources/{id}/release",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "当前授权清理身份且复位证据充分才AVAILABLE；未知则QUARANTINED",
+      "refs": [
+        "CT28"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s167",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op065",
+      "kind": "HTTP",
+      "name": "设置预算账户",
+      "operation": "POST /api/v1/budgets",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅预算管理员；不得降低至已占用额度以下；价格版本与有效期固定",
+      "refs": [
+        "CT28"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s168",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P14"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op066",
+      "kind": "HTTP",
+      "name": "登记可调度资源",
+      "operation": "POST /api/v1/resources",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只登记资源；通过隔离/控制网关fencing/复位验收后方可AVAILABLE",
+      "refs": [
+        "CT28"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s169",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P14"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op067",
+      "kind": "HTTP",
+      "name": "获取任务增量事件",
+      "operation": "GET /api/v1/tasks/{id}/events",
+      "providers": [
+        "API接口"
+      ],
+      "callers": [],
+      "mode": "HTTPS · SSE通知",
+      "scenario": "SSE text/event-stream；Last-Event-ID按持久事件游标恢复；事件裁剪、重新鉴权；窗口外要求刷新完整投影",
+      "refs": [
+        "CT26"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端",
+        "获准外部API／CI调用方"
+      ],
+      "status": "已有定义",
+      "target": "s170",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P07",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op068",
+      "kind": "HTTP",
+      "name": "读取资产详情与使用位置",
+      "operation": "GET /api/v1/assets/{id}",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只返回当前可见的版本和使用位置；参考正文走独立用途服务",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s171",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08",
+        "P09",
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op069",
+      "kind": "HTTP",
+      "name": "读取精确资产版本",
+      "operation": "GET /api/v1/asset-versions/{id}",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "按资产类型和purpose裁剪；执行身份不能借目录读取答案或隐藏规约",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s172",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08",
+        "P09",
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op070",
+      "kind": "HTTP",
+      "name": "查询评测对象",
+      "operation": "GET /api/v1/objects",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "项目内分页；只展示获准对象和版本元数据",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s173",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op071",
+      "kind": "HTTP",
+      "name": "读取对象与接入能力",
+      "operation": "GET /api/v1/objects/{id}",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "接入凭据只返回是否配置；不返回secret值或可兑换secret_ref",
+      "refs": [
+        "CT02"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s174",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op072",
+      "kind": "HTTP",
+      "name": "读取方案及生效来源",
+      "operation": "GET /api/v1/tasks/{id}/plan",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "准备阶段可缺对象；配置按草稿Schema验证；来源和失效确认明确展示",
+      "refs": [
+        "CT08"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s175",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P09",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op073",
+      "kind": "HTTP",
+      "name": "用户申请资料上传",
+      "operation": "POST /api/v1/uploads",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "按真实用户授权签发单对象暂存地址；限制文件类型与大小；文件名不作为存储路径",
+      "refs": [
+        "CT18"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s176",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "通用文件暂存/确认；业务使用方按资产导入、人工采集和试评材料区分。"
+    },
+    {
+      "id": "op074",
+      "kind": "HTTP",
+      "name": "用户确认上传文件",
+      "operation": "POST /api/v1/uploads/{id}/commit",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "校验实际存储字节和版本后写file_object；仅形成文件，不虚构正式评测单元/证据",
+      "refs": [
+        "CT18"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s177",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "通用文件暂存/确认；业务使用方按资产导入、人工采集和试评材料区分。"
+    },
+    {
+      "id": "op075",
+      "kind": "HTTP",
+      "name": "申请证据下载",
+      "operation": "POST /api/v1/files/{id}/download-tickets",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "证据、报告及获准导入文件按所属业务资源重新鉴权；单文件短期票据；封存参考不能经此旁路下载",
+      "refs": [
+        "CT19"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s178",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07",
+        "P08",
+        "P10"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op076",
+      "kind": "HTTP",
+      "name": "查询资源与隔离状态",
+      "operation": "GET /api/v1/resources",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅可见资源元数据、租约状态及隔离原因；无宿主凭据",
+      "refs": [
+        "CT28"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s179",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P14"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op077",
+      "kind": "HTTP",
+      "name": "查询人工批次进度",
+      "operation": "GET /api/v1/review-batches/{id}",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "进度不泄漏盲评身份或其他意见；管理视图另按角色裁剪",
+      "refs": [
+        "CT23"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s180",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op078",
+      "kind": "HTTP",
+      "name": "查询报告制品与生成状态",
+      "operation": "GET /api/v1/reports/{id}",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "失败仅重试报告；文件引用需再授权获取下载，不自动给公开URL",
+      "refs": [
+        "CT27"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s181",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op079",
+      "kind": "HTTP",
+      "name": "取消任务及等待节点",
+      "operation": "POST /api/v1/tasks/{id}/cancel",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "覆盖无run的人工/已有记录路径；有run则同一命令协调在途动作核查，清理未知不释放资源；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT17"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s182",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op080",
+      "kind": "HTTP",
+      "name": "创建小规模试评",
+      "operation": "POST /api/v1/pilots",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "绑定候选或草稿摘要；检查四类样例、所选路径人员与权限；独立PILOT工作，不生成正式快照；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT08"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s183",
+      "product_providers": [
+        "P01",
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+    },
+    {
+      "id": "op081",
+      "kind": "HTTP",
+      "name": "查询试评记录",
+      "operation": "GET /api/v1/pilots/{id}",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "返回原始试评依据和缺口；formal_eligible固定false，不与正式trial混用",
+      "refs": [
+        "CT08"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s184",
+      "product_providers": [
+        "P01",
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+    },
+    {
+      "id": "op082",
+      "kind": "HTTP",
+      "name": "确认试评结果",
+      "operation": "POST /api/v1/pilots/{id}/completions",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "以当前摘要校验四类样例、有效证据及两位真实评审的独立意见；只确认已接收事实，客户端verified不能替代证据校验",
+      "refs": [
+        "CT10"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s185",
+      "product_providers": [
+        "P01",
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+    },
+    {
+      "id": "op083",
+      "kind": "HTTP",
+      "name": "提交抽检与质量审核",
+      "operation": "POST /api/v1/review-batches/{id}/audits",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 202受理后查询",
+      "scenario": "有权审核人追加意见，绑定selection_hash；更正追加；不直接锁定或改写正式结果；返回operation_id指向access.operation_job，同领域创建事务持久化；权限沿owner对象。",
+      "refs": [
+        "CT24"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s186",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op084",
+      "kind": "HTTP",
+      "name": "分派人工采集",
+      "operation": "POST /api/v1/trials/{id}/manual-executions",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅MANUAL试验；真实人员资格及环境就绪；重复trial返回同单。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s187",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op085",
+      "kind": "HTTP",
+      "name": "开始人工采集",
+      "operation": "POST /api/v1/manual-executions/{id}/start",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "鉴权指派人；锁资源并签发人工租约；追加attempt开始事实，禁止创建work_attempt。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s188",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op086",
+      "kind": "HTTP",
+      "name": "提交人工步骤",
+      "operation": "POST /api/v1/manual-executions/{id}/steps",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "服务端验证当前操作员、设备租约及generation；步骤与证据上下文同trial。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s189",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op087",
+      "kind": "HTTP",
+      "name": "提交人工执行终态",
+      "operation": "POST /api/v1/manual-executions/{id}/complete",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "COMPLETED仅指采集结束；结束事实不可覆盖；设备清理未核验不得释放；UNKNOWN进入核查。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s190",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op088",
+      "kind": "HTTP",
+      "name": "提交工作终态",
+      "operation": "POST /internal/v1/work/{id}/complete",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "锁work→attempt→领域owner；校验generation/epoch/身份/当前租约、结果归属、摘要、完成屏障；原子写终态/operation/outbox；同哈希幂等，冲突409。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s191",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "通用工作生命周期属于P02调度运行；调用产品随IMPORT/EXECUTE/SCORE/REPORT等kind确定，不代表全部同时调用。"
+    },
+    {
+      "id": "op089",
+      "kind": "HTTP",
+      "name": "提交独立校准结果",
+      "operation": "POST /internal/v1/calibrations/{id}/results",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "自动评分"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "验证划分不重叠、参考授权和固定指纹；服务端重算混淆矩阵/严重错误放行；结果提交不等于资格批准，之后调用work complete与资格审批。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s192",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op090",
+      "kind": "HTTP",
+      "name": "建立权限包",
+      "operation": "POST /api/v1/permission-packs",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s193",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op091",
+      "kind": "HTTP",
+      "name": "建立权限包发布",
+      "operation": "POST /api/v1/permission-packs/{id}/publish",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "验证可执行流程、资格和独立性；规则冲突返回422；已发布版本不原位编辑。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s194",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op092",
+      "kind": "HTTP",
+      "name": "建立匹配规则",
+      "operation": "POST /api/v1/permission-rules",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s195",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op093",
+      "kind": "HTTP",
+      "name": "建立匹配规则发布",
+      "operation": "POST /api/v1/permission-rules/{id}/publish",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "验证可执行流程、资格和独立性；规则冲突返回422；已发布版本不原位编辑。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s196",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op094",
+      "kind": "HTTP",
+      "name": "匹配与绑定权限包",
+      "operation": "POST /api/v1/tasks/{id}/pack-binding",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "最高级匹配并同级priority降序；最高位并列/停用/缺分类阻断。preview不写；冻结或在途拒绝迁移；新绑定与旧确认失效/待办更新同事务。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s197",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P02",
+        "P13"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op095",
+      "kind": "HTTP",
+      "name": "批准正式基线",
+      "operation": "POST /api/v1/baselines/promote",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "必须PUBLISHED且绝对门槛通过、范围授权；仅相对更好不合格。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s198",
+      "product_providers": [
+        "P09"
+      ],
+      "product_callers": [
+        "P09"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op096",
+      "kind": "HTTP",
+      "name": "生成可复现趋势",
+      "operation": "POST /api/v1/quality-trends/selections",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "各比较单元窗口最新正式运行；读取截止时该运行最新已发布快照；未发布不隐式回退到更早较好运行；保存IDs及缺失。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s199",
+      "product_providers": [
+        "P11"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op097",
+      "kind": "HTTP",
+      "name": "建立协作事项",
+      "operation": "POST /api/v1/collaboration-items",
+      "providers": [
+        "AI助手"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "私人内容只有显式share动作才能进入共享事项；正文不是业务批准。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s200",
+      "product_providers": [
+        "P12"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op098",
+      "kind": "HTTP",
+      "name": "交接协作事项",
+      "operation": "POST /api/v1/collaboration-items/{id}/handoff",
+      "providers": [
+        "AI助手"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "接收人具任务权限；绑定当前修订；旧修订返回409。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s201",
+      "product_providers": [
+        "P12"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op099",
+      "kind": "HTTP",
+      "name": "显式共享讨论",
+      "operation": "POST /api/v1/collaboration-items/{id}/share",
+      "providers": [
+        "AI助手"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "仅内容owner且当前仍有任务权限可共享，不授予额外权限。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s202",
+      "product_providers": [
+        "P12"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op100",
+      "kind": "HTTP",
+      "name": "登记反馈",
+      "operation": "POST /api/v1/feedback",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s203",
+      "product_providers": [
+        "P11"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op101",
+      "kind": "HTTP",
+      "name": "确认并生成回归候选",
+      "operation": "POST /api/v1/feedback/{id}/regression",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "授权评测负责人确认事实；候选仍须P01验证/双方发布，不自动变金标。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s204",
+      "product_providers": [
+        "P11"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op102",
+      "kind": "HTTP",
+      "name": "分派冻结前人工试评",
+      "operation": "POST /api/v1/pilots/{id}/review-assignments",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "pilot方案/候选所属项目及评审用途校验；person_key至少两位；不要求manifest，不写正式review.batch。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s205",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op103",
+      "kind": "HTTP",
+      "name": "读取本人盲评试评材料",
+      "operation": "GET /api/v1/pilot-review-tasks/{id}",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "只本人且仍获分派；不返回他人意见、对象身份或AI判定。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s206",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op104",
+      "kind": "HTTP",
+      "name": "提交冻结前试评意见",
+      "operation": "POST /api/v1/pilot-review-tasks/{id}/opinions",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "追加pilot_opinion；提交后意见不可改，纠正新pilot；试评完成需两位真实人意见和分歧处理记录，不形成正式score。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s207",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op105",
+      "kind": "HTTP",
+      "name": "提交获准人工证据",
+      "operation": "POST /api/v1/evidence/commit",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "普通用户使用自身身份；验证upload创建者和用途、当前任务指派/人工执行租约或pilot评审身份、上下文与对象版本；同证据服务提交，不给用户worker权限。EXISTING_RECORDS仍需来源/授权核验。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s208",
+      "product_providers": [
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op106",
+      "kind": "HTTP",
+      "name": "提交自动执行尝试事实",
+      "operation": "POST /internal/v1/attempts/{id}/completions",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "当前generation/epoch及attempt-work归属校验，首次expected_revision=0；锁attempt插入revision+1，回执hash幂等。UNKNOWN只使工作进入核查，不允许SUCCEEDED work.complete。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "跨进程请求经Worker网关；网关是API接口模块的部署入口，不是新增业务模块。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s209",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op107",
+      "kind": "HTTP",
+      "name": "核查并追加真实终态",
+      "operation": "POST /api/v1/attempts/{id}/reconciliations",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "获准核查人员/当前服务执行query后的独立依据；锁attempt校验最新修订，追加completion并Outbox；不复活终态run，不授权重发外部动作。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s210",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "op108",
+      "kind": "HTTP",
+      "name": "追加清理核验事实",
+      "operation": "POST /api/v1/attempts/{id}/cleanup-verifications",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "HTTPS · 同步请求响应",
+      "scenario": "设备负责人/获准运维/人工执行人员按冻结权限；NOT_APPLICABLE需未占环境依据；CLEANED验证环境当前generation和初态证据，原子释放租约；不改旧completion。",
+      "refs": [
+        "EXT-V12"
+      ],
+      "note": "外部入口经API接口路由；本行调用模块不等于可免鉴权的调用白名单。",
+      "external": [
+        "Web前端"
+      ],
+      "status": "已有定义",
+      "target": "s211",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT01.1",
+      "kind": "内部接口",
+      "name": "Policy.require",
+      "operation": "Policy.require(scope, action, resource)",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "API接口"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "受理请求前校验主体、项目、用途和资源权限。",
+      "refs": [
+        "CT01"
+      ],
+      "note": "所有关键动作；拒绝不缓存为允许",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT02.1",
+      "kind": "内部接口",
+      "name": "Registry.resolve_exact",
+      "operation": "Registry.resolve_exact(version_refs, purpose)",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "方案管理",
+        "自动评分",
+        "结果与报告",
+        "AI助手",
+        "参考数据管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "解析精确资产版本及依赖；不返回未授权参考正文。",
+      "refs": [
+        "CT02"
+      ],
+      "note": "不返回未授权参考正文；latest 禁止进入正式清单",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08",
+        "P09",
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT04.1",
+      "kind": "内部接口",
+      "name": "Dispatch.enqueue",
+      "operation": "Dispatch.enqueue(kind=IMPORT, spec_ref)",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "数据处理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "导入控制端创建持久工作项。",
+      "refs": [
+        "CT04"
+      ],
+      "note": "唯一逻辑工作键；导入角色限定",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT06.1",
+      "kind": "内部接口",
+      "name": "Registry.attach_import_candidate",
+      "operation": "Registry.attach_import_candidate(import_id, refs, uow)",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "数据处理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "提交导入候选资产及行回执。",
+      "refs": [
+        "CT06"
+      ],
+      "note": "目录与行回执同事务；参考暂存未关联前不可读",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P01"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT07.1",
+      "kind": "内部接口",
+      "name": "Mapping.apply",
+      "operation": "Mapping.apply(mapping_version, typed_projection)",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "方案管理",
+        "执行器",
+        "自动评分"
+      ],
+      "mode": "本地纯函数 · 同步",
+      "scenario": "按固定映射转换获准字段。",
+      "refs": [
+        "CT07"
+      ],
+      "note": "无任意 eval/shell；请求映射不得引用 expected",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT09.1",
+      "kind": "内部接口",
+      "name": "Qualification（资格查询；完整方法签名待明确）",
+      "operation": "Qualification（资格查询；完整方法签名待明确）",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "方案管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "预检／冻结前检查当前资格与适用条件。",
+      "refs": [
+        "CT09"
+      ],
+      "note": "IF-Q02；沿用原CT09简称，未据此新增接口签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT09.2",
+      "kind": "内部接口",
+      "name": "ReviewReadiness（准备检查；完整方法签名待明确）",
+      "operation": "ReviewReadiness（准备检查；完整方法签名待明确）",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "方案管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "预检／冻结前检查当前资格与适用条件。",
+      "refs": [
+        "CT09"
+      ],
+      "note": "IF-Q02；沿用原CT09简称，未据此新增接口签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT09.3",
+      "kind": "内部接口",
+      "name": "Policy.check（完整方法签名待明确）",
+      "operation": "Policy.check（完整方法签名待明确）",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "方案管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "预检／冻结前检查当前资格与适用条件。",
+      "refs": [
+        "CT09"
+      ],
+      "note": "IF-Q02；沿用原CT09简称，未据此新增接口签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT11.1",
+      "kind": "内部接口",
+      "name": "Orchestrator.start",
+      "operation": "Orchestrator.start(task_id, manifest_id, start_key)",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "API接口",
+        "消息与集成"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "启动已冻结方案；已有记录路径不创建执行run。",
+      "refs": [
+        "CT11"
+      ],
+      "note": "EXISTING_RECORDS 不生成 run；B2预算受理同事务",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT12.1",
+      "kind": "内部接口",
+      "name": "Dispatch.enqueue",
+      "operation": "Dispatch.enqueue(node_ref, kind, spec_ref, uow)",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "节点与工作项同事务创建。",
+      "refs": [
+        "CT12"
+      ],
+      "note": "节点与工作项同事务；禁止一个节点双派",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT16.1",
+      "kind": "外部适配",
+      "name": "Adapter.submit",
+      "operation": "Adapter.submit",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS／已批准对象协议",
+      "scenario": "提交对象动作",
+      "refs": [
+        "CT16"
+      ],
+      "note": "平台适配器的动作名；真实URL／协议取决于已发布接入版本，不假定第三方存在同名HTTP接口。",
+      "external": [
+        "被测对象／接入端"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "提供方是平台外部被测对象/接入端，不是主PRD产品模块；平台执行适配对应调用产品。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT16.2",
+      "kind": "外部适配",
+      "name": "Adapter.query",
+      "operation": "Adapter.query",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS／已批准对象协议",
+      "scenario": "查询外部实际状态",
+      "refs": [
+        "CT16"
+      ],
+      "note": "平台适配器的动作名；真实URL／协议取决于已发布接入版本，不假定第三方存在同名HTTP接口。",
+      "external": [
+        "被测对象／接入端"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "提供方是平台外部被测对象/接入端，不是主PRD产品模块；平台执行适配对应调用产品。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT16.3",
+      "kind": "外部适配",
+      "name": "Adapter.cancel",
+      "operation": "Adapter.cancel",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "HTTPS／已批准对象协议",
+      "scenario": "请求取消外部动作",
+      "refs": [
+        "CT16"
+      ],
+      "note": "平台适配器的动作名；真实URL／协议取决于已发布接入版本，不假定第三方存在同名HTTP接口。",
+      "external": [
+        "被测对象／接入端"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "提供方是平台外部被测对象/接入端，不是主PRD产品模块；平台执行适配对应调用产品。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT18.1",
+      "kind": "内部接口",
+      "name": "Upload.create",
+      "operation": "Upload.create",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "数据处理",
+        "执行器",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "申请受控材料上传会话；HTTP暴露对应op053。",
+      "refs": [
+        "CT18"
+      ],
+      "note": "内部Port与HTTP适配属于同一能力，不是两次上传。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT19.1",
+      "kind": "内部接口",
+      "name": "Evidence.read_projection",
+      "operation": "Evidence.read_projection(material_refs, scope)",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "流程编排",
+        "自动评分",
+        "人工评测",
+        "结果与报告"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "按用途读取证据投影；Worker跨进程读取对应op055。",
+      "refs": [
+        "CT19",
+        "CT25"
+      ],
+      "note": "不可见不泄漏索引；补证不覆盖原记录",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT21.1",
+      "kind": "内部接口",
+      "name": "Assessment.create_job",
+      "operation": "Assessment.create_job(manifest, units, materials)",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "材料满足后创建逻辑评分作业；纯人工路径不调用。",
+      "refs": [
+        "CT21"
+      ],
+      "note": "纯人工不调用；逻辑评分键唯一",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT22.1",
+      "kind": "内部接口",
+      "name": "Dispatch.enqueue",
+      "operation": "Dispatch.enqueue(kind=AUTO_SCORE)",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "自动评分"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "评分控制端派发评分工作。",
+      "refs": [
+        "CT22"
+      ],
+      "note": "检查器错误UNKNOWN；原子结果/完成事件；不能直接写总分",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT23.1",
+      "kind": "内部接口",
+      "name": "Review.create_batch",
+      "operation": "Review.create_batch(task, manifest, purpose, protocol, materials)",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "流程编排",
+        "自动评分"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "创建指定用途人工批次；自动评分不得因重复通知重复建批次。",
+      "refs": [
+        "CT23"
+      ],
+      "note": "可无 run；不同用途不得误发正式对象结果",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P02",
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT25.1",
+      "kind": "内部接口",
+      "name": "Aggregation.refresh",
+      "operation": "Aggregation.refresh(manifest, selection_ref)",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "流程编排",
+        "消息与集成"
+      ],
+      "mode": "事件触发后调用Port",
+      "scenario": "按当前获准采用关系刷新结果快照。",
+      "refs": [
+        "CT25"
+      ],
+      "note": "采用输入hash唯一；不依赖必有 score.completed/run.ended",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT25.2",
+      "kind": "内部接口",
+      "name": "读取候选评分结果（方法名／签名待明确）",
+      "operation": "读取候选评分结果（方法名／签名待明确）",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "结果与报告"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "聚合采用精确评分／人工结果版本。",
+      "refs": [
+        "CT25"
+      ],
+      "note": "IF-Q02：原CT25只列依赖模块，未给独立查询方法；不得默认直查对方表。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT25.3",
+      "kind": "内部接口",
+      "name": "读取锁定人工结果（方法名／签名待明确）",
+      "operation": "读取锁定人工结果（方法名／签名待明确）",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "结果与报告"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "聚合采用精确评分／人工结果版本。",
+      "refs": [
+        "CT25"
+      ],
+      "note": "IF-Q02：原CT25只列依赖模块，未给独立查询方法；不得默认直查对方表。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT26.1",
+      "kind": "内部接口",
+      "name": "读取统一结果（内部调用入口待明确）",
+      "operation": "读取统一结果（内部调用入口待明确）",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "消息与集成",
+        "AI助手"
+      ],
+      "mode": "Port或授权HTTPS · 待明确",
+      "scenario": "获准集成回执／助手上下文读取同一快照。",
+      "refs": [
+        "CT26"
+      ],
+      "note": "IF-Q03：不将读取结果权限扩大为POST /acceptance权限。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P10",
+        "P11",
+        "P12"
+      ],
+      "product_note": "仅映射读取用途；不授予调用方业务验收写权限，内部入口仍见IF-Q03。"
+    },
+    {
+      "id": "CT27.1",
+      "kind": "内部接口",
+      "name": "Dispatch.enqueue",
+      "operation": "Dispatch.enqueue(kind=REPORT)",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "结果与报告"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "派发基于固定快照的报告渲染。",
+      "refs": [
+        "CT27"
+      ],
+      "note": "报告失败独立重试；不重跑对象/评分",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT28.1",
+      "kind": "内部接口",
+      "name": "Resources.acquire",
+      "operation": "Resources.acquire",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "申请资源租约",
+      "refs": [
+        "CT28"
+      ],
+      "note": "资源和工作领取事务协调；B2预留；清理未知不释放",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT28.2",
+      "kind": "内部接口",
+      "name": "Resources.release_after_reset",
+      "operation": "Resources.release_after_reset",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "清理核实后释放资源",
+      "refs": [
+        "CT28"
+      ],
+      "note": "资源和工作领取事务协调；B2预留；清理未知不释放",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT28.3",
+      "kind": "内部接口",
+      "name": "Budget.reserve_in_uow",
+      "operation": "Budget.reserve_in_uow",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "受理事务内预留预算",
+      "refs": [
+        "CT28"
+      ],
+      "note": "资源和工作领取事务协调；B2预留；清理未知不释放",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT29.1",
+      "kind": "内部接口",
+      "name": "提交AI助手用量（身份／入口待明确）",
+      "operation": "提交AI助手用量（身份／入口待明确）",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "AI助手"
+      ],
+      "mode": "服务调用 · 待明确",
+      "scenario": "将助手模型用量记入独立用途账。",
+      "refs": [
+        "CT29"
+      ],
+      "note": "IF-Q04；原用量HTTP声明worker身份，control身份不能自动复用。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT30.1",
+      "kind": "内部接口",
+      "name": "Outbox.append_in_uow",
+      "operation": "Outbox.append_in_uow",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "API接口",
+        "权限管理",
+        "资产管理",
+        "数据处理",
+        "方案管理",
+        "流程编排",
+        "任务调度",
+        "证据管理",
+        "自动评分",
+        "人工评测",
+        "结果与报告",
+        "消息与集成",
+        "AI助手",
+        "运维监控",
+        "参考数据管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "责任模块在控制端业务事务内追加事件。",
+      "refs": [
+        "CT30"
+      ],
+      "note": "这里列控制端逻辑模块；执行器Worker只提交回执，由责任模块写Outbox，禁止Worker直连数据库。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_note": "Outbox是P15可靠运行公共机制；每次调用的业务归属取决于生产模块，并非P11业务订阅。"
+    },
+    {
+      "id": "CT30.2",
+      "kind": "内部接口",
+      "name": "Inbox.handle",
+      "operation": "Inbox.handle",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "方案管理",
+        "资产管理",
+        "流程编排",
+        "任务调度",
+        "数据处理",
+        "自动评分",
+        "结果与报告",
+        "参考数据管理",
+        "API接口",
+        "消息与集成",
+        "运维监控"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "已登记订阅处理器按独立消费者名去重后执行业务事务。",
+      "refs": [
+        "CT30"
+      ],
+      "note": "订阅关系以事件行列出的具体类型和条件为准；此行不是订阅全部事件的授权。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_note": "Inbox为公共可靠运行机制；具体消费者以事件行和订阅登记为准。"
+    },
+    {
+      "id": "CT31.1",
+      "kind": "外部适配",
+      "name": "IssueAdapter.sync",
+      "operation": "IssueAdapter.sync",
+      "providers": [],
+      "callers": [
+        "消息与集成"
+      ],
+      "mode": "外部HTTPS",
+      "scenario": "同步外部缺陷并保存外部ID；不接管外部主状态。",
+      "refs": [
+        "CT31"
+      ],
+      "note": "防重放；外部缺陷主状态保持；触发不绕预检",
+      "external": [
+        "外部缺陷系统"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P10"
+      ],
+      "product_note": "提供方为外部缺陷系统；平台问题诊断经消息与集成调用。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT31.2",
+      "kind": "内部接口",
+      "name": "Trigger.start（触发受理／方法分工待明确）",
+      "operation": "Trigger.start（触发受理／方法分工待明确）",
+      "providers": [
+        "方案管理",
+        "流程编排"
+      ],
+      "callers": [
+        "消息与集成"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "处理获准外部变更，重新预检并启动新修订。",
+      "refs": [
+        "CT31"
+      ],
+      "note": "IF-Q02：原契约合并方案准备与流程启动，需明确各自入口；不能绕过冻结。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT32.1",
+      "kind": "内部接口",
+      "name": "Proposal.apply_to_draft",
+      "operation": "Proposal.apply_to_draft(proposal, target, expected_version)",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "AI助手"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "用户采纳差异后写入对应草稿；按target路由。",
+      "refs": [
+        "CT32"
+      ],
+      "note": "两个展示行对应不同草稿提供模块；不代表同一次采纳必然调用两方。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT32.2",
+      "kind": "内部接口",
+      "name": "Proposal.apply_to_draft",
+      "operation": "Proposal.apply_to_draft(proposal, target, expected_version)",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "AI助手"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "用户采纳差异后写入对应草稿；按target路由。",
+      "refs": [
+        "CT32"
+      ],
+      "note": "两个展示行对应不同草稿提供模块；不代表同一次采纳必然调用两方。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P12"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT33.1",
+      "kind": "内部接口",
+      "name": "Audit.append_requested",
+      "operation": "Audit.append_requested",
+      "providers": [
+        "运维监控"
+      ],
+      "callers": [
+        "API接口",
+        "权限管理",
+        "资产管理",
+        "数据处理",
+        "方案管理",
+        "流程编排",
+        "任务调度",
+        "证据管理",
+        "自动评分",
+        "人工评测",
+        "结果与报告",
+        "消息与集成",
+        "AI助手",
+        "运维监控",
+        "参考数据管理"
+      ],
+      "mode": "事务Outbox → AMQP",
+      "scenario": "关键控制端变更提出审计追加请求。",
+      "refs": [
+        "CT33"
+      ],
+      "note": "执行器动作通过op051/op052等回执由责任模块记录审计；执行器不直接写事务Outbox。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT34.1",
+      "kind": "内部接口",
+      "name": "drain（命令签名／责任边界待明确）",
+      "operation": "drain（命令签名／责任边界待明确）",
+      "providers": [
+        "流程编排",
+        "任务调度"
+      ],
+      "callers": [
+        "运维监控"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "停止新节点／新工作领取",
+      "refs": [
+        "CT34"
+      ],
+      "note": "IF-Q02：原CT34只给动作集合；此行是职责解释，不是已确定的方法签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P14"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT34.2",
+      "kind": "内部接口",
+      "name": "isolate（命令签名／责任边界待明确）",
+      "operation": "isolate（命令签名／责任边界待明确）",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "运维监控"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "隔离资源",
+      "refs": [
+        "CT34"
+      ],
+      "note": "IF-Q02：原CT34只给动作集合；此行是职责解释，不是已确定的方法签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT34.3",
+      "kind": "内部接口",
+      "name": "reconcile（命令签名／责任边界待明确）",
+      "operation": "reconcile（命令签名／责任边界待明确）",
+      "providers": [
+        "流程编排",
+        "任务调度"
+      ],
+      "callers": [
+        "运维监控"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "核查未知动作／资源状态",
+      "refs": [
+        "CT34"
+      ],
+      "note": "IF-Q02：原CT34只给动作集合；此行是职责解释，不是已确定的方法签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P14"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT34.4",
+      "kind": "内部接口",
+      "name": "replay（命令签名／责任边界待明确）",
+      "operation": "replay（命令签名／责任边界待明确）",
+      "providers": [
+        "消息与集成"
+      ],
+      "callers": [
+        "运维监控"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "重投获准死信",
+      "refs": [
+        "CT34"
+      ],
+      "note": "IF-Q02：原CT34只给动作集合；此行是职责解释，不是已确定的方法签名。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P15"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT35.1",
+      "kind": "内部接口",
+      "name": "Reference.publish_candidate",
+      "operation": "Reference.publish_candidate",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "人工评测"
+      ],
+      "mode": "Port／reference-api HTTPS",
+      "scenario": "发布获准参考候选；目录与参考正文分离。",
+      "refs": [
+        "CT35"
+      ],
+      "note": "IF-Q02：原契约合并两个提供模块，目录发布与参考内容提交的签名分工待明确。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT35.2",
+      "kind": "内部接口",
+      "name": "Reference.publish_candidate",
+      "operation": "Reference.publish_candidate",
+      "providers": [
+        "参考数据管理"
+      ],
+      "callers": [
+        "人工评测"
+      ],
+      "mode": "Port／reference-api HTTPS",
+      "scenario": "发布获准参考候选；目录与参考正文分离。",
+      "refs": [
+        "CT35"
+      ],
+      "note": "IF-Q02：原契约合并两个提供模块，目录发布与参考内容提交的签名分工待明确。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P07"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT35.3",
+      "kind": "内部接口",
+      "name": "Validation.record",
+      "operation": "Validation.record",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "自动评分"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "登记校准／验证事实，资格批准另行执行。",
+      "refs": [
+        "CT35"
+      ],
+      "note": "普通发布规则仍适用；资格独立批准",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT36.1",
+      "kind": "外部适配",
+      "name": "Egress.authorize_destination",
+      "operation": "Egress.authorize_destination",
+      "providers": [],
+      "callers": [
+        "API接口",
+        "数据处理",
+        "执行器",
+        "证据管理",
+        "自动评分",
+        "结果与报告",
+        "AI助手",
+        "参考数据管理"
+      ],
+      "mode": "受控出口代理HTTPS",
+      "scenario": "发起外部请求前校验目标、解析后地址及重定向。",
+      "refs": [
+        "CT36"
+      ],
+      "note": "验证解析后地址和重定向；禁止未批准回退",
+      "external": [
+        "受控出口（基础设施）"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P08",
+        "P10",
+        "P11",
+        "P12"
+      ],
+      "product_note": "提供方为受控出口基础设施（非独立产品模块）；P13/P15负责安全与运维治理，不因此成为本动作的服务提供方。",
+      "product_provider_scope": "公共基础设施（非独立产品模块）"
+    },
+    {
+      "id": "CT37.1",
+      "kind": "内部接口",
+      "name": "EngineBinding.resolve_exact",
+      "operation": "EngineBinding.resolve_exact",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "方案管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "解析已验证引擎绑定并冻结版本摘要。",
+      "refs": [
+        "CT37"
+      ],
+      "note": "冻结前查资格；不向普通用户新增引擎选择",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT38.1",
+      "kind": "内部接口",
+      "name": "EngineExecution.prepare",
+      "operation": "EngineExecution.prepare",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：prepare。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT38.2",
+      "kind": "内部接口",
+      "name": "EngineExecution.submit",
+      "operation": "EngineExecution.submit",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：submit。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT38.3",
+      "kind": "内部接口",
+      "name": "EngineExecution.query",
+      "operation": "EngineExecution.query",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：query。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT38.4",
+      "kind": "内部接口",
+      "name": "EngineExecution.cancel",
+      "operation": "EngineExecution.cancel",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：cancel。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT38.5",
+      "kind": "内部接口",
+      "name": "EngineExecution.artifacts",
+      "operation": "EngineExecution.artifacts",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：artifacts。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT38.6",
+      "kind": "内部接口",
+      "name": "EngineExecution.cleanup",
+      "operation": "EngineExecution.cleanup",
+      "providers": [
+        "执行器"
+      ],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "执行器运行时调用本模块引擎执行适配：cleanup。",
+      "refs": [
+        "CT38"
+      ],
+      "note": "同模块子组件接口；引擎由冻结绑定决定，普通用户不选择引擎。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+    },
+    {
+      "id": "CT39.1",
+      "kind": "内部接口",
+      "name": "EngineScoring.score",
+      "operation": "EngineScoring.score",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "自动评分"
+      ],
+      "mode": "本地Python／受控子进程",
+      "scenario": "评分运行时调用本模块引擎评分适配。",
+      "refs": [
+        "CT39"
+      ],
+      "note": "同模块子组件接口；Ragas等只接收获准评分投影。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P06"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT44.1",
+      "kind": "外部适配",
+      "name": "Injection.apply",
+      "operation": "Injection.apply",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "固定HTTPS／登记设备协议",
+      "scenario": "按资源租约执行工具／环境控制：apply。",
+      "refs": [
+        "CT44"
+      ],
+      "note": "每次改变资源状态均fencing；无命中不当产品FAIL",
+      "external": [
+        "工具／环境控制网关"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "product_note": "提供方为外部设备/注入环境；模型端侧与Agent设备场景按批准接入能力调用。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT44.2",
+      "kind": "外部适配",
+      "name": "Injection.read_state",
+      "operation": "Injection.read_state",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "固定HTTPS／登记设备协议",
+      "scenario": "按资源租约执行工具／环境控制：read_state。",
+      "refs": [
+        "CT44"
+      ],
+      "note": "每次改变资源状态均fencing；无命中不当产品FAIL",
+      "external": [
+        "工具／环境控制网关"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "product_note": "提供方为外部设备/注入环境；模型端侧与Agent设备场景按批准接入能力调用。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT44.3",
+      "kind": "外部适配",
+      "name": "Injection.reset",
+      "operation": "Injection.reset",
+      "providers": [],
+      "callers": [
+        "执行器"
+      ],
+      "mode": "固定HTTPS／登记设备协议",
+      "scenario": "按资源租约执行工具／环境控制：reset。",
+      "refs": [
+        "CT44"
+      ],
+      "note": "每次改变资源状态均fencing；无命中不当产品FAIL",
+      "external": [
+        "工具／环境控制网关"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P02",
+        "P03",
+        "P04"
+      ],
+      "product_note": "提供方为外部设备/注入环境；模型端侧与Agent设备场景按批准接入能力调用。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "CT45.1",
+      "kind": "内部接口",
+      "name": "MandatoryScope.resolve",
+      "operation": "MandatoryScope.resolve",
+      "providers": [
+        "权限管理",
+        "资产管理"
+      ],
+      "callers": [
+        "方案管理"
+      ],
+      "mode": "同进程Port · 同步",
+      "scenario": "冻结前解析获批强制集合与资产规则版本。",
+      "refs": [
+        "CT45"
+      ],
+      "note": "IF-Q02：原CT45合并两个接收模块，需明确唯一入口及内部查询分工。",
+      "external": [],
+      "status": "签名／边界待明确",
+      "target": "s400",
+      "product_providers": [
+        "P01",
+        "P13"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "CT46.1",
+      "kind": "外部适配",
+      "name": "EvaluationReceipt.deliver",
+      "operation": "EvaluationReceipt.deliver",
+      "providers": [],
+      "callers": [
+        "消息与集成"
+      ],
+      "mode": "外部HTTPS · 异步重试",
+      "scenario": "向获准外部调用方交付固定快照回执。",
+      "refs": [
+        "CT46"
+      ],
+      "note": "沿用Outbox/Inbox；签名、重试/死信；外部失败不改平台结果",
+      "external": [
+        "外部CI／业务API调用方"
+      ],
+      "status": "已有定义",
+      "target": "s400",
+      "product_providers": [],
+      "product_callers": [
+        "P08",
+        "P11"
+      ],
+      "product_note": "外部CI/业务API接收回执，平台P08结果交付/P11持续评测触发回调。",
+      "product_provider_scope": "平台外部（非产品模块）"
+    },
+    {
+      "id": "EV01.AssetPublished",
+      "kind": "消息事件",
+      "name": "AssetPublished",
+      "operation": "AssetPublished",
+      "providers": [
+        "资产管理"
+      ],
+      "callers": [
+        "方案管理",
+        "自动评分",
+        "消息与集成"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "版本/hash；不更新旧清单",
+      "refs": [
+        "EV01"
+      ],
+      "note": "版本/hash；不更新旧清单；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s401",
+      "product_providers": [
+        "P01"
+      ],
+      "product_callers": [
+        "P02",
+        "P06",
+        "P11"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV02.import.completed",
+      "kind": "消息事件",
+      "name": "import.completed",
+      "operation": "import.completed",
+      "providers": [
+        "数据处理"
+      ],
+      "callers": [
+        "资产管理",
+        "流程编排"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "import/候选版本/回执；扩展事件",
+      "refs": [
+        "EV02"
+      ],
+      "note": "import/候选版本/回执；扩展事件；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s402",
+      "product_providers": [
+        "P01",
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02"
+      ],
+      "product_note": "资产导入或已有记录导入按import用途区分归属；消费方仍是原登记模块。"
+    },
+    {
+      "id": "EV03.plan.frozen",
+      "kind": "消息事件",
+      "name": "plan.frozen",
+      "operation": "plan.frozen",
+      "providers": [
+        "方案管理"
+      ],
+      "callers": [
+        "流程编排",
+        "运维监控"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "manifest/hash；不自动启动正式评测",
+      "refs": [
+        "EV03"
+      ],
+      "note": "manifest/hash；不自动启动正式评测；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s403",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV04.work.completed",
+      "kind": "消息事件",
+      "name": "work.completed",
+      "operation": "work.completed",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排",
+        "数据处理",
+        "自动评分",
+        "结果与报告"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "work/kind/结果引用；技术扩展；按kind唯一负责",
+      "refs": [
+        "EV04"
+      ],
+      "note": "work/kind/结果引用；技术扩展；按kind唯一负责；消息与集成负责传递，不代替领域模块生产或消费业务事实。 IF-Q06：按kind路由，候选模块并非全部处理同一消息。",
+      "external": [],
+      "status": "消费边界待明确",
+      "target": "s404",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P06",
+        "P08"
+      ],
+      "product_note": "按work.kind唯一处理；完整kind映射仍见IF-Q06。"
+    },
+    {
+      "id": "EV05.node.completed",
+      "kind": "消息事件",
+      "name": "node.completed",
+      "operation": "node.completed",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "flow/node/unit/version；技术扩展",
+      "refs": [
+        "EV05"
+      ],
+      "note": "flow/node/unit/version；技术扩展；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s405",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV06.run.started",
+      "kind": "消息事件",
+      "name": "run.started",
+      "operation": "run.started",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "任务调度",
+        "结果与报告",
+        "运维监控"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "执行/清理状态分别保存",
+      "refs": [
+        "EV06"
+      ],
+      "note": "执行/清理状态分别保存；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s406",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P08",
+        "P14",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV06.run.ended",
+      "kind": "消息事件",
+      "name": "run.ended",
+      "operation": "run.ended",
+      "providers": [
+        "流程编排"
+      ],
+      "callers": [
+        "任务调度",
+        "结果与报告",
+        "运维监控"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "执行/清理状态分别保存",
+      "refs": [
+        "EV06"
+      ],
+      "note": "执行/清理状态分别保存；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s406",
+      "product_providers": [
+        "P02"
+      ],
+      "product_callers": [
+        "P08",
+        "P14",
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV07.evidence.recorded",
+      "kind": "消息事件",
+      "name": "evidence.recorded",
+      "operation": "evidence.recorded",
+      "providers": [
+        "证据管理"
+      ],
+      "callers": [
+        "流程编排",
+        "结果与报告"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "精确证据/unit；只有流程编排派发后续评分",
+      "refs": [
+        "EV07"
+      ],
+      "note": "精确证据/unit；只有流程编排派发后续评分；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s407",
+      "product_providers": [
+        "P02",
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV08.score.completed",
+      "kind": "消息事件",
+      "name": "score.completed",
+      "operation": "score.completed",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "流程编排",
+        "结果与报告"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "评分作业/结果版本/有效性",
+      "refs": [
+        "EV08"
+      ],
+      "note": "评分作业/结果版本/有效性；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s408",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P02",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV09.review.required",
+      "kind": "消息事件",
+      "name": "review.required",
+      "operation": "review.required",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "只按冻结必要复核规则创建人评",
+      "refs": [
+        "EV09"
+      ],
+      "note": "只按冻结必要复核规则创建人评；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s409",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "本事件的直接消费者为流程编排P02，再经CT23创建P07批次；不把间接P07写成事件直接消费者。"
+    },
+    {
+      "id": "EV10.review.completed",
+      "kind": "消息事件",
+      "name": "review.completed",
+      "operation": "review.completed",
+      "providers": [
+        "人工评测"
+      ],
+      "callers": [
+        "流程编排",
+        "结果与报告",
+        "资产管理"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "purpose/round/锁定结果；无run也有效",
+      "refs": [
+        "EV10"
+      ],
+      "note": "purpose/round/锁定结果；无run也有效；消息与集成负责传递，不代替领域模块生产或消费业务事实。 资产管理只消费参考用途的锁定结果。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s410",
+      "product_providers": [
+        "P07"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV11.snapshot.published",
+      "kind": "消息事件",
+      "name": "snapshot.published",
+      "operation": "snapshot.published",
+      "providers": [
+        "结果与报告"
+      ],
+      "callers": [
+        "消息与集成",
+        "API接口"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "snapshot_id；所有消费读取同一快照",
+      "refs": [
+        "EV11"
+      ],
+      "note": "snapshot_id；所有消费读取同一快照；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s411",
+      "product_providers": [
+        "P08"
+      ],
+      "product_callers": [
+        "P02",
+        "P08",
+        "P09",
+        "P10",
+        "P11"
+      ],
+      "product_note": "按已登记消息与集成/API投影的结果、对比、诊断及持续评测用途映射，不表示新增独立事件消费者。"
+    },
+    {
+      "id": "EV12.pack.revoked",
+      "kind": "消息事件",
+      "name": "pack.revoked",
+      "operation": "pack.revoked",
+      "providers": [
+        "权限管理"
+      ],
+      "callers": [
+        "流程编排",
+        "任务调度",
+        "参考数据管理"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "撤销引用/版本/时刻；事件加速清理，当前授权仍即时查",
+      "refs": [
+        "EV12"
+      ],
+      "note": "撤销引用/版本/时刻；事件加速清理，当前授权仍即时查；消息与集成负责传递，不代替领域模块生产或消费业务事实。 IF-Q05：其他查询缓存所属模块未明确，不额外推定订阅方。",
+      "external": [],
+      "status": "消费边界待明确",
+      "target": "s412",
+      "product_providers": [
+        "P13"
+      ],
+      "product_callers": [
+        "P01",
+        "P02",
+        "P14"
+      ],
+      "product_note": "仅映射已明确的编排、调度、参考模块；未明确查询缓存消费者仍见IF-Q05。"
+    },
+    {
+      "id": "EV13.usage.recorded",
+      "kind": "消息事件",
+      "name": "usage.recorded",
+      "operation": "usage.recorded",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "结果与报告"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "用量不再次创建；B2预算到顶仍保留核查",
+      "refs": [
+        "EV13"
+      ],
+      "note": "用量不再次创建；B2预算到顶仍保留核查；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s413",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV13.budget.exhausted",
+      "kind": "消息事件",
+      "name": "budget.exhausted",
+      "operation": "budget.exhausted",
+      "providers": [
+        "任务调度"
+      ],
+      "callers": [
+        "流程编排"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "用量不再次创建；B2预算到顶仍保留核查",
+      "refs": [
+        "EV13"
+      ],
+      "note": "用量不再次创建；B2预算到顶仍保留核查；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s413",
+      "product_providers": [
+        "P14"
+      ],
+      "product_callers": [
+        "P02"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV14.qualification.changed",
+      "kind": "消息事件",
+      "name": "qualification.changed",
+      "operation": "qualification.changed",
+      "providers": [
+        "自动评分"
+      ],
+      "callers": [
+        "方案管理",
+        "流程编排",
+        "结果与报告"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "范围/版本；阻断新用、历史影响另立记录",
+      "refs": [
+        "EV14"
+      ],
+      "note": "范围/版本；阻断新用、历史影响另立记录；消息与集成负责传递，不代替领域模块生产或消费业务事实。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s414",
+      "product_providers": [
+        "P06"
+      ],
+      "product_callers": [
+        "P02",
+        "P08"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    },
+    {
+      "id": "EV15.audit.append.requested",
+      "kind": "消息事件",
+      "name": "audit.append.requested",
+      "operation": "audit.append.requested",
+      "providers": [
+        "API接口",
+        "权限管理",
+        "资产管理",
+        "数据处理",
+        "方案管理",
+        "流程编排",
+        "任务调度",
+        "证据管理",
+        "自动评分",
+        "人工评测",
+        "结果与报告",
+        "消息与集成",
+        "AI助手",
+        "运维监控",
+        "参考数据管理"
+      ],
+      "callers": [
+        "运维监控"
+      ],
+      "mode": "AMQP · 至少一次异步投递",
+      "scenario": "audit_id/主体/动作/结果；幂等追加",
+      "refs": [
+        "EV15"
+      ],
+      "note": "audit_id/主体/动作/结果；幂等追加；消息与集成负责传递，不代替领域模块生产或消费业务事实。 Worker事实经回执接收方转成审计事件；不为执行器增加数据库写权限。",
+      "external": [],
+      "status": "已有定义",
+      "target": "s415",
+      "product_providers": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "product_callers": [
+        "P15"
+      ],
+      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+    }
+  ],
+  "ct_index": {
+    "CT01": [
+      "op001",
+      "op046",
+      "op047",
+      "CT01.1"
+    ],
+    "CT02": [
+      "op002",
+      "op003",
+      "op004",
+      "op005",
+      "op006",
+      "op007",
+      "op008",
+      "op012",
+      "op013",
+      "op068",
+      "op069",
+      "op070",
+      "op071",
+      "CT02.1"
+    ],
+    "CT03": [
+      "op009"
+    ],
+    "CT04": [
+      "CT04.1"
+    ],
+    "CT05": [
+      "op010",
+      "op058"
+    ],
+    "CT06": [
+      "CT06.1"
+    ],
+    "CT07": [
+      "CT07.1"
+    ],
+    "CT08": [
+      "op018",
+      "op019",
+      "op072",
+      "op080",
+      "op081"
+    ],
+    "CT09": [
+      "op032",
+      "CT09.1",
+      "CT09.2",
+      "CT09.3"
+    ],
+    "CT10": [
+      "op020",
+      "op021",
+      "op082"
+    ],
+    "CT11": [
+      "op015",
+      "op022",
+      "CT11.1"
+    ],
+    "CT12": [
+      "CT12.1"
+    ],
+    "CT13": [
+      "op049"
+    ],
+    "CT14": [
+      "op050"
+    ],
+    "CT15": [
+      "op051"
+    ],
+    "CT16": [
+      "op014",
+      "CT16.1",
+      "CT16.2",
+      "CT16.3"
+    ],
+    "CT17": [
+      "op023",
+      "op052",
+      "op079"
+    ],
+    "CT18": [
+      "op053",
+      "op054",
+      "op073",
+      "op074",
+      "CT18.1"
+    ],
+    "CT19": [
+      "op027",
+      "op055",
+      "op075",
+      "CT19.1"
+    ],
+    "CT20": [
+      "op056",
+      "op057"
+    ],
+    "CT21": [
+      "CT21.1"
+    ],
+    "CT22": [
+      "op059",
+      "CT22.1"
+    ],
+    "CT23": [
+      "op025",
+      "op077",
+      "CT23.1"
+    ],
+    "CT24": [
+      "op026",
+      "op028",
+      "op029",
+      "op030",
+      "op083"
+    ],
+    "CT25": [
+      "op036",
+      "CT19.1",
+      "CT25.1",
+      "CT25.2",
+      "CT25.3"
+    ],
+    "CT26": [
+      "op016",
+      "op017",
+      "op033",
+      "op035",
+      "op067",
+      "CT26.1"
+    ],
+    "CT27": [
+      "op034",
+      "op060",
+      "op078",
+      "CT27.1"
+    ],
+    "CT28": [
+      "op064",
+      "op065",
+      "op066",
+      "op076",
+      "CT28.1",
+      "CT28.2",
+      "CT28.3"
+    ],
+    "CT29": [
+      "op043",
+      "op063",
+      "CT29.1"
+    ],
+    "CT30": [
+      "CT30.1",
+      "CT30.2"
+    ],
+    "CT31": [
+      "op037",
+      "op038",
+      "op039",
+      "op040",
+      "CT31.1",
+      "CT31.2"
+    ],
+    "CT32": [
+      "op041",
+      "op042",
+      "CT32.1",
+      "CT32.2"
+    ],
+    "CT33": [
+      "op048",
+      "CT33.1"
+    ],
+    "CT34": [
+      "op044",
+      "op045",
+      "CT34.1",
+      "CT34.2",
+      "CT34.3",
+      "CT34.4"
+    ],
+    "CT35": [
+      "op031",
+      "CT35.1",
+      "CT35.2",
+      "CT35.3"
+    ],
+    "CT36": [
+      "CT36.1"
+    ],
+    "CT37": [
+      "CT37.1"
+    ],
+    "CT38": [
+      "CT38.1",
+      "CT38.2",
+      "CT38.3",
+      "CT38.4",
+      "CT38.5",
+      "CT38.6"
+    ],
+    "CT39": [
+      "CT39.1"
+    ],
+    "CT40": [
+      "op061"
+    ],
+    "CT41": [
+      "op062"
+    ],
+    "CT42": [
+      "op024"
+    ],
+    "CT43": [
+      "op011"
+    ],
+    "CT44": [
+      "CT44.1",
+      "CT44.2",
+      "CT44.3"
+    ],
+    "CT45": [
+      "CT45.1"
+    ],
+    "CT46": [
+      "CT46.1"
+    ]
+  },
+  "questions": [
+    [
+      "IF-Q01",
+      "op061 / CT40",
+      "HTTP目录将引擎回执归属任务调度，CT40却写执行器／自动评分控制端。需确认谁接收回执、谁拥有调用记录、如何派发到执行或评分处理器。",
+      "任务调度、执行器、自动评分",
+      "表中保留op061原责任模块，不将CT40的另一个归属静默覆盖。"
+    ],
+    [
+      "IF-Q02",
+      "CT09 / CT25 / CT31 / CT34 / CT35 / CT45",
+      "这些契约含简称、多个责任模块或多个操作，尚无逐方法签名与明确分工。需确认实际方法名、参数／结果及每个方法的唯一责任模块。",
+      "方案管理、流程编排及相关提供模块",
+      "按现有文字拆行；名称不足的行标为待明确，不凭空新增可调用方法。"
+    ],
+    [
+      "IF-Q03",
+      "op033 / op035 / CT26",
+      "CT26把消息与集成、AI助手与读取结果／业务验收合在一行。需确认它们的结果读取使用内部Port还是授权HTTP；不能据此授予业务验收写权限。",
+      "结果与报告、消息与集成、AI助手、权限管理",
+      "HTTP表列已定义用户入口；内部读取另列待明确，验收保持用户授权入口。"
+    ],
+    [
+      "IF-Q04",
+      "op063 / CT29",
+      "AI助手的模型调用成本需入账，但用量HTTP声明worker身份，未明确control进程如何获得用量提交资格。需确认服务身份、作用域及调用入口。",
+      "AI助手、任务调度、权限管理",
+      "op063先列明确的四类Worker调用模块，AI助手路径单独标待明确。"
+    ],
+    [
+      "IF-Q05",
+      "pack.revoked / EV12",
+      "原事件表使用“查询缓存”而未列缓存所属模块及消费者名。需确认哪些模块缓存授权结果，以及各自独立Inbox／队列。",
+      "权限管理、API接口及拥有授权缓存的模块",
+      "只列已明确的流程编排、任务调度、参考数据管理，不猜测其他订阅方。"
+    ],
+    [
+      "IF-Q06",
+      "work.completed / EV04",
+      "原表要求按kind唯一负责，但缺完整kind→处理器映射及消费名称。需确认导入、评分、报告、执行、校准等实际枚举的消费归属。",
+      "任务调度、流程编排、数据处理、自动评分、结果与报告",
+      "列现有四个候选消费模块及按kind路由条件，不表示四方都推进同一业务节点。"
+    ]
+  ],
+  "products": {
+    "P01": "评测资产",
+    "P02": "对象接入与任务管理",
+    "P03": "模型评测",
+    "P04": "Agent 评测",
+    "P05": "非 Agent 应用评测",
+    "P06": "自动评分",
+    "P07": "人工评测",
+    "P08": "评测报告与结果追溯",
+    "P09": "实验对比",
+    "P10": "问题诊断",
+    "P11": "持续评测与反馈",
+    "P12": "AI 辅助协作",
+    "P13": "权限与业务隔离",
+    "P14": "预算与资源",
+    "P15": "运行保障与审计"
+  },
+  "product_mapping_basis": {
+    "date": "2026-11-28",
+    "sources": [
+      "主PRD V1.3 §5.2产品职责/模块协作",
+      "概要设计 V2.4 §4.1产品功能—技术能力映射",
+      "详细设计 V1.2逐接口合同、CT与事件定义"
+    ],
+    "status": "技术设计的业务归属映射；不是运行调用统计或新增授权；原IF-Q01—06不关闭"
+  }
+}
