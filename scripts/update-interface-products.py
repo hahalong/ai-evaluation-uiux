@@ -114,55 +114,9 @@ for row in data['rows']:
   row['product_provider_scope']=scope.get(row['id'],'平台外部（非产品模块）')
 data['products']=products
 data['product_mapping_basis']={'date':'2026-11-28','sources':['主PRD V1.3 §5.2产品职责/模块协作','概要设计 V2.4 §4.1产品功能—技术能力映射','详细设计 V1.2逐接口合同、CT与事件定义'],'status':'技术设计的业务归属映射；不是运行调用统计或新增授权；原IF-Q01—06不关闭'}
-(D/'inventory.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
-
-p=R/'dist/design/index.html';s=p.read_text();E=html.escape
-def labels(values):return '<br>'.join(E(k+' '+products[k]) for k in values)
-count=0
-def change_row(m):
- global count
- head,body=m[1],m[2]
- meta=json.loads(html.unescape(re.search(r'data-iface="([^"]+)"',head)[1]))
- domid=re.search(r'id="([^"]+)"',head)[1]
- row=next(r for r in data['rows'] if domid=='iface-'+re.sub(r'[^a-zA-Z0-9_-]','-',r['id']))
- cells=re.findall(r'<td\b[^>]*>.*?</td>',body,re.S)
- assert len(cells) in (7,9),(domid,len(cells))
- if len(cells)==9:cells=[cells[i] for i in (0,1,2,4,6,7,8)]
- for key in ('product_providers','product_callers'):meta[key]=row[key]
- meta['product_labels']=[k+' '+products[k] for k in sorted(set(row['product_providers']+row['product_callers']))]
- meta['product_provider_labels']=[k+' '+products[k] for k in row['product_providers']]
- meta['product_caller_labels']=[k+' '+products[k] for k in row['product_callers']]
- scope=row.get('product_provider_scope','')
- if scope:meta['product_provider_labels'].append(scope)
- head=re.sub(r'data-iface="[^"]+"',lambda _: 'data-iface="'+E(json.dumps(meta,ensure_ascii=False),quote=True)+'"',head)
- pp='<td class="iface-product-provider">'+('<strong>归属待明确（候选）</strong><br>' if row['id'] in ['op061','CT34.1','CT34.3','CT45.1'] else '')+(labels(row['product_providers']) or E(scope))+'<details><summary>产品归属说明</summary>'+E(row['product_note'])+'</details></td>'
- pc='<td class="iface-product-caller">'+labels(row['product_callers'])+'</td>'
- count+=1
- return head+''.join(cells[:3]+[pp,cells[3],pc]+cells[4:])+'</tr>'
-s=re.sub(r'(<tr\b[^>]*data-iface="[^"]+"[^>]*>)(.*?)</tr>',change_row,s,flags=re.S)
-assert count==180,count
-headers=['接口编号／类型','接口名称／路径／方法','提供／生产技术模块','提供方产品模块','调用／消费技术模块清单','调用方产品模块','交互方式','调用场景与约束','原契约／事件与详情']
-s=re.sub(r'(<table id="interface-table"><thead><tr>).*?(</tr></thead>)',lambda m:m[1]+''.join('<th scope="col">'+h+'</th>' for h in headers)+m[2],s,flags=re.S)
-options='<datalist id="iface-product-options">'+''.join('<option value="'+E(k+' '+v)+'"></option>' for k,v in products.items())+'</datalist>'
-newcontrols='<label for="iface-product-provider">提供方产品模块<input id="iface-product-provider" type="search" list="iface-product-options" placeholder="P01 或评测资产"></label><label for="iface-product-caller">调用方产品模块<input id="iface-product-caller" type="search" list="iface-product-options" placeholder="P02 或对象接入"></label>'+options
-if 'id="iface-product-provider"' not in s:s=s.replace('<button type="button" id="iface-reset">',newcontrols+'<button type="button" id="iface-reset">',1)
-s=s.replace('placeholder="接口编号、名称、路径或场景"','placeholder="接口 / 产品编号、模块名、路径或场景"')
-note='<p id="iface-product-help"><strong>产品维度：</strong>提供方产品模块表示接口能力归属，不等于受益产品或使用范围；共用执行、文件、查询能力没有独立产品归属时明确标注公共能力，不强行分配P编号。调用方产品模块表示直接调用技术组件承接的产品场景，含同模块子组件调用，不代表产品模块之间各有一次远程调用。消息行两列分别表示生产与消费产品，多生产者可以成立；归属有争议的接口展示候选项并保留IF-Q待明确状态。<strong>筛选用法：</strong>六个条件取交集；产品字段支持编号或名称，Agent评测与Agent 评测等中英文空格写法等价。P01按编号精确匹配。需要查某产品使用的公共接口，请筛选调用方产品模块；关键词可搜索两方向及场景说明。筛选只作用于下方逐接口表，技术模块统计索引仍显示全量。</p>'
-if 'id="iface-product-help"' not in s:s=s.replace('<div class="iface-controls">',note+'<div class="iface-controls">',1)
-else:s=re.sub(r'<p id="iface-product-help">.*?</p>',lambda _:note,s,flags=re.S)
-css='''<style id="iface-product-style">#interface-table{min-width:1510px}#interface-table th:nth-child(1){width:100px}#interface-table th:nth-child(2){width:220px}#interface-table th:nth-child(3){width:115px}#interface-table th:nth-child(4){width:190px}#interface-table th:nth-child(5){width:130px}#interface-table th:nth-child(6){width:190px}#interface-table th:nth-child(7){width:120px}#interface-table th:nth-child(8){width:225px}#interface-table th:nth-child(9){width:100px}#interface-directory input{width:230px}#interface-directory .iface-controls label{max-width:100%}#interface-directory .iface-count{flex-basis:100%;font-weight:600}#interface-table tr[hidden]{display:none!important}@media print{#interface-table{min-width:0}}</style>'''
-s=re.sub(r'<style id="iface-product-style">.*?</style>','',s,flags=re.S)
-s=s.replace('<section id="interface-directory">',css+'<section id="interface-directory">',1)
-js=(R/'scripts/interface-filter.js').read_text()
-s=re.sub(r'<script id="iface-script">.*?</script>',lambda _: '<script id="iface-script">'+js+'</script>',s,flags=re.S)
-p.write_text(s)
-manifest=R/'docs/design-publication.json';v=json.loads(manifest.read_text())
-for x in v['sources']:
- if x['page']=='index.html':x['published_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
-for x in v['checks']:
- if x['page']=='index.html':x['bytes']=p.stat().st_size
-v['interface_directory']['product_modules']=15
-v['interface_directory']['product_fields']=['提供方产品模块','调用方产品模块']
-v['interface_directory']['updated']='2026-11-28'
-manifest.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
-print('Updated 180 rows with bidirectional product mappings; preserved existing technical columns.')
+# Generate one catalog for HTTP, application ports, domain collaborators, plugins,
+# event consumers and infrastructure. Keep the reviewed base ownership rules above.
+import importlib.util
+spec=importlib.util.spec_from_file_location('complete_interfaces',R/'scripts/complete-interface-inventory.py')
+module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+module.publish(data)

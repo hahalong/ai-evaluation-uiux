@@ -15,7 +15,7 @@
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
       "source_sha256": "32d8a5a92a0d7a38af3ecbfa742f0b606d21abf15678c44b68bd8bce14f1e191",
-      "published_sha256": "cd8b2896b8ee531ed22d4e46e34f77c91c73188873d79451577b2b138964301f"
+      "published_sha256": "c47f7ac3192841c8bc94f8c656308db0a4f9202b7c84d72654b219937f215468"
     },
     {
       "page": "tasks.html",
@@ -45,7 +45,7 @@
   "checks": [
     {
       "page": "index.html",
-      "bytes": 1090391,
+      "bytes": 1707701,
       "svg": 17,
       "anchors_and_local_links": "passed",
       "no_download_controls": "passed"
@@ -89,19 +89,49 @@
   "publication_policy": "在线阅读；不提供附件、CSV、图源或打包下载入口。公开网页及Git历史不提供防保存保证。",
   "interface_directory": {
     "HTTP": 108,
-    "internal": 46,
-    "external_adapters": 9,
+    "internal": 182,
+    "external_adapters": 12,
     "events": 17,
-    "total_rows": 180,
+    "total_rows": 398,
     "original_CT_groups": 46,
     "modules": 16,
-    "technical_questions": 6,
+    "technical_questions": 8,
     "product_modules": 15,
     "product_fields": [
       "提供方产品模块",
       "调用方产品模块"
     ],
-    "updated": "2026-11-28"
+    "updated": "2026-11-28",
+    "coverage": {
+      "http_count": 108,
+      "ct_groups": 46,
+      "event_count": 17,
+      "modules": 16,
+      "original_count": 180,
+      "total": 398,
+      "kinds": {
+        "HTTP": 108,
+        "内部接口": 182,
+        "外部适配": 12,
+        "消息事件": 17,
+        "Worker协议": 1,
+        "插件接口": 18,
+        "基础设施接口": 23,
+        "消息处理接口": 37
+      },
+      "scope": "现有16个技术模块的公开交互边界、产品策略/插件契约、外部及基础设施协议；不逐项列无调用边界的私有辅助函数。",
+      "verification": "设计清单覆盖核对，不是代码实现或联调通过声明"
+    },
+    "interface_kinds": {
+      "HTTP": 108,
+      "内部接口": 182,
+      "外部适配": 12,
+      "消息事件": 17,
+      "Worker协议": 1,
+      "插件接口": 18,
+      "基础设施接口": 23,
+      "消息处理接口": 37
+    }
   },
   "engineering_supplement": {
     "date": "2026-11-26",

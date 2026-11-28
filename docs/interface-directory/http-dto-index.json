@@ -1,0 +1,434 @@
+{
+  "op001": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op001Response"
+  },
+  "op002": {
+    "请求": "AssetCreate",
+    "响应": "op002Response"
+  },
+  "op003": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op003Response"
+  },
+  "op004": {
+    "请求": "op004Request",
+    "响应": "op004Response"
+  },
+  "op005": {
+    "请求": "op005Request",
+    "响应": "op005Response"
+  },
+  "op006": {
+    "请求": "op006Request",
+    "响应": "op006Response"
+  },
+  "op007": {
+    "请求": "op007Request",
+    "响应": "op007Response"
+  },
+  "op008": {
+    "请求": "op008Request",
+    "响应": "op008Response"
+  },
+  "op009": {
+    "请求": "op009Request",
+    "响应": "Receipt"
+  },
+  "op010": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op010Response"
+  },
+  "op011": {
+    "请求": "op011Request",
+    "响应": "Receipt"
+  },
+  "op012": {
+    "请求": "op012Request",
+    "响应": "op012Response"
+  },
+  "op013": {
+    "请求": "op013Request",
+    "响应": "op013Response"
+  },
+  "op014": {
+    "请求": "op014Request",
+    "响应": "Receipt"
+  },
+  "op015": {
+    "请求": "op015Request",
+    "响应": "op015Response"
+  },
+  "op016": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op016Response"
+  },
+  "op017": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "TaskView"
+  },
+  "op018": {
+    "请求": "op018Request",
+    "响应": "op018Response"
+  },
+  "op019": {
+    "请求": "op019Request",
+    "响应": "op019Response"
+  },
+  "op020": {
+    "请求": "op020Request",
+    "响应": "op020Response"
+  },
+  "op021": {
+    "请求": "op021Request",
+    "响应": "op021Response"
+  },
+  "op022": {
+    "请求": "op022Request",
+    "响应": "Receipt"
+  },
+  "op023": {
+    "请求": "op023Request",
+    "响应": "Receipt"
+  },
+  "op024": {
+    "请求": "op024Request",
+    "响应": "Receipt"
+  },
+  "op025": {
+    "请求": "op025Request",
+    "响应": "Receipt"
+  },
+  "op026": {
+    "请求": "op026Request",
+    "响应": "op026Response"
+  },
+  "op027": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op027Response"
+  },
+  "op028": {
+    "请求": "op028Request",
+    "响应": "op028Response"
+  },
+  "op029": {
+    "请求": "op029Request",
+    "响应": "op029Response"
+  },
+  "op030": {
+    "请求": "op030Request",
+    "响应": "op030Response"
+  },
+  "op031": {
+    "请求": "op031Request",
+    "响应": "Receipt"
+  },
+  "op032": {
+    "请求": "op032Request",
+    "响应": "op032Response"
+  },
+  "op033": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "SnapshotView"
+  },
+  "op034": {
+    "请求": "op034Request",
+    "响应": "Receipt"
+  },
+  "op035": {
+    "请求": "op035Request",
+    "响应": "op035Response"
+  },
+  "op036": {
+    "请求": "op036Request",
+    "响应": "op036Response"
+  },
+  "op037": {
+    "请求": "op037Request",
+    "响应": "op037Response"
+  },
+  "op038": {
+    "请求": "op038Request",
+    "响应": "Receipt"
+  },
+  "op039": {
+    "请求": "op039Request",
+    "响应": "op039Response"
+  },
+  "op040": {
+    "请求": "op040Request",
+    "响应": "Receipt"
+  },
+  "op041": {
+    "请求": "op041Request",
+    "响应": "Receipt"
+  },
+  "op042": {
+    "请求": "op042Request",
+    "响应": "op042Response"
+  },
+  "op043": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op043Response"
+  },
+  "op044": {
+    "请求": "op044Request",
+    "响应": "Receipt"
+  },
+  "op045": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op045Response"
+  },
+  "op046": {
+    "请求": "op046Request",
+    "响应": "op046Response"
+  },
+  "op047": {
+    "请求": "op047Request",
+    "响应": "op047Response"
+  },
+  "op048": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op048Response"
+  },
+  "op049": {
+    "请求": "op049Request",
+    "响应": "op049Response"
+  },
+  "op050": {
+    "请求": "op050Request",
+    "响应": "op050Response"
+  },
+  "op051": {
+    "请求": "op051Request",
+    "响应": "op051Response"
+  },
+  "op052": {
+    "请求": "op052Request",
+    "响应": "op052Response"
+  },
+  "op053": {
+    "请求": "op053Request",
+    "响应": "op053Response"
+  },
+  "op054": {
+    "请求": "op054Request",
+    "响应": "op054Response"
+  },
+  "op055": {
+    "请求": "op055Request",
+    "响应": "op055Response"
+  },
+  "op056": {
+    "请求": "op056Request",
+    "响应": "op056Response"
+  },
+  "op057": {
+    "请求": "op057Request",
+    "响应": "op057Response"
+  },
+  "op058": {
+    "请求": "op058Request",
+    "响应": "op058Response"
+  },
+  "op059": {
+    "请求": "op059Request",
+    "响应": "op059Response"
+  },
+  "op060": {
+    "请求": "op060Request",
+    "响应": "op060Response"
+  },
+  "op061": {
+    "请求": "op061Request",
+    "响应": "op061Response"
+  },
+  "op062": {
+    "请求": "op062Request",
+    "响应": "op062Response"
+  },
+  "op063": {
+    "请求": "op063Request",
+    "响应": "op063Response"
+  },
+  "op064": {
+    "请求": "op064Request",
+    "响应": "op064Response"
+  },
+  "op065": {
+    "请求": "op065Request",
+    "响应": "op065Response"
+  },
+  "op066": {
+    "请求": "op066Request",
+    "响应": "op066Response"
+  },
+  "op067": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "EventEnvelope"
+  },
+  "op068": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op068Response"
+  },
+  "op069": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op069Response"
+  },
+  "op070": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op070Response"
+  },
+  "op071": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op071Response"
+  },
+  "op072": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op072Response"
+  },
+  "op073": {
+    "请求": "op073Request",
+    "响应": "op073Response"
+  },
+  "op074": {
+    "请求": "op074Request",
+    "响应": "op074Response"
+  },
+  "op075": {
+    "请求": "op075Request",
+    "响应": "op075Response"
+  },
+  "op076": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op076Response"
+  },
+  "op077": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op077Response"
+  },
+  "op078": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op078Response"
+  },
+  "op079": {
+    "请求": "op079Request",
+    "响应": "Receipt"
+  },
+  "op080": {
+    "请求": "PilotStart",
+    "响应": "Receipt"
+  },
+  "op081": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "PilotView"
+  },
+  "op082": {
+    "请求": "PilotCompletion",
+    "响应": "PilotView"
+  },
+  "op083": {
+    "请求": "ReviewAuditCommand",
+    "响应": "Receipt"
+  },
+  "op084": {
+    "请求": "op084Request",
+    "响应": "op084Response"
+  },
+  "op085": {
+    "请求": "op085Request",
+    "响应": "op085Response"
+  },
+  "op086": {
+    "请求": "op086Request",
+    "响应": "op086Response"
+  },
+  "op087": {
+    "请求": "op087Request",
+    "响应": "op087Response"
+  },
+  "op088": {
+    "请求": "op088Request",
+    "响应": "op088Response"
+  },
+  "op089": {
+    "请求": "op089Request",
+    "响应": "op089Response"
+  },
+  "op090": {
+    "请求": "op090Request",
+    "响应": "op090Response"
+  },
+  "op091": {
+    "请求": "op091Request",
+    "响应": "op091Response"
+  },
+  "op092": {
+    "请求": "op092Request",
+    "响应": "op092Response"
+  },
+  "op093": {
+    "请求": "op093Request",
+    "响应": "op093Response"
+  },
+  "op094": {
+    "请求": "op094Request",
+    "响应": "op094Response"
+  },
+  "op095": {
+    "请求": "op095Request",
+    "响应": "op095Response"
+  },
+  "op096": {
+    "请求": "op096Request",
+    "响应": "op096Response"
+  },
+  "op097": {
+    "请求": "op097Request",
+    "响应": "op097Response"
+  },
+  "op098": {
+    "请求": "op098Request",
+    "响应": "op098Response"
+  },
+  "op099": {
+    "请求": "op099Request",
+    "响应": "op099Response"
+  },
+  "op100": {
+    "请求": "op100Request",
+    "响应": "op100Response"
+  },
+  "op101": {
+    "请求": "op101Request",
+    "响应": "op101Response"
+  },
+  "op102": {
+    "请求": "op102Request",
+    "响应": "op102Response"
+  },
+  "op103": {
+    "请求": "无body，见路径/查询参数",
+    "响应": "op103Response"
+  },
+  "op104": {
+    "请求": "op104Request",
+    "响应": "op104Response"
+  },
+  "op105": {
+    "请求": "op105Request",
+    "响应": "op105Response"
+  },
+  "op106": {
+    "请求": "op106Request",
+    "响应": "op106Response"
+  },
+  "op107": {
+    "请求": "op107Request",
+    "响应": "op107Response"
+  },
+  "op108": {
+    "请求": "op108Request",
+    "响应": "op108Response"
+  }
+}

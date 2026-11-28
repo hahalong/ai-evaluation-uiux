@@ -56,6 +56,8 @@
   }));
   root.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => {
     let target = document.getElementById(a.getAttribute('href').slice(1));
+    // Related contracts can be outside the current product/type filter.
+    if (target && target.dataset && target.dataset.iface && target.hidden) { clear(); apply(); }
     while (target) {
       if (target.tagName === 'DETAILS') target.open = true;
       target = target.parentElement;
