@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..');
 const page=fs.readFileSync(path.join(root,'dist/design/index.html'),'utf8');
 const inventory=JSON.parse(fs.readFileSync(path.join(root,'docs/interface-directory/inventory.json'),'utf8'));
 const decode=s=>s.replace(/&quot;/g,'"').replace(/&#x27;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
-const fixture=[...page.matchAll(/<tr\b([^>]*data-iface="([^"]+)"[^>]*)>(.*?)<\/tr>/gs)].map(m=>({id:/id="([^"]+)"/.exec(m[1])[1],meta:JSON.parse(decode(m[2])),text:decode(m[3].replace(/<[^>]+>/g,' ')),cells:[...m[3].matchAll(/<td\b/g)].length}));
+const fixture=[...page.matchAll(/<tr\b([^>]*data-iface="([^"]+)"[^>]*)>(.*?)<\/tr>/gs)].map(m=>({id:/id="([^"]+)"/.exec(m[1])[1],meta:JSON.parse(decode(m[2])),text:decode(m[3].replace(/<[^>]+>/g,'')),cells:[...m[3].matchAll(/<td\b/g)].length}));
 const js=/<script id="iface-script">(.*?)<\/script>/s.exec(page)[1];
 function setup(){
  const el=extra=>Object.assign({value:'',hidden:false,textContent:'',listeners:{},addEventListener(k,f){this.listeners[k]=f},scrollIntoView(){}},extra);
@@ -65,4 +65,35 @@ test('technical filters, event direction, module shortcuts, empty state and rese
  s.reset();assert.equal(s.visible().length,180);assert(s.fields.empty.hidden);assert.equal(s.scroll.scrollTop,0);
  for(const b of s.buttons){s.set('product-provider','P15');b.listeners.click();assert.equal(s.fields['product-provider'].value,'');const role=b.dataset.ifaceRole;for(const r of s.visible()){const m=JSON.parse(r.dataset.iface);assert((['provide','publish'].includes(role)?m.providers:m.callers).includes(b.dataset.ifaceModule));assert.equal(m.kind==='消息事件',['publish','subscribe'].includes(role))}}
  s.anchor.listeners.click();assert(s.target.open&&s.parent.open);
+});
+
+test('Chinese/English spacing is equivalent in keyword and both product searches',()=>{
+ const s=setup();
+ for(const field of ['query','product-provider','product-caller']){
+  for(const variants of [['Agent评测','Agent 评测','ＡＧＥＮＴ　评测','agent   评测'],['非Agent应用评测','非 Agent 应用评测'],['AI辅助协作','AI 辅助协作']]){
+   s.reset();s.set(field,variants[0]);const expected=s.visible().map(r=>r.id);
+   // P04 has no standalone provider contract in this inventory after correcting shared ports.
+   if(field!=='product-provider')assert(expected.length>0,field+': '+variants[0]);
+   for(const value of variants.slice(1)){s.set(field,value);assert.deepEqual(s.visible().map(r=>r.id),expected,field+': '+value)}
+  }
+ }
+ s.reset();s.set('query','P04 Agent评测');const expected=inventory.rows.filter(r=>[...r.product_providers,...r.product_callers].includes('P04')).map(r=>'iface-'+r.id.replace(/[^a-zA-Z0-9_-]/g,'-'));
+ assert.deepEqual(s.visible().map(r=>r.id),expected);
+ s.fields.query.value='';s.fields.query.listeners.search();assert.equal(s.visible().length,180);
+ s.fields.query.value='Agent评测';s.fields.query.listeners.compositionend();assert(s.visible().length>0);
+});
+test('shared ports do not list all beneficiary products as owners; event producers and unresolved ownership remain explicit',()=>{
+ const byId=Object.fromEntries(inventory.rows.map(r=>[r.id,r]));
+ for(let i=1;i<=6;i++){
+  const row=byId['CT38.'+i];assert.deepEqual(row.product_providers,[]);
+  assert.equal(row.product_provider_scope,'公共执行能力（无独立产品归属）');
+  assert.deepEqual(row.product_callers,['P02','P03','P04','P05']);
+ }
+ for(const id of ['op053','op073','op074','CT18.1'])assert.deepEqual(byId[id].product_providers,[]);
+ for(const id of ['op054','op105','EV07.evidence.recorded'])assert.deepEqual(byId[id].product_providers,['P08']);
+ for(const id of ['op080','op081','op082']){assert.deepEqual(byId[id].product_providers,['P02']);assert.deepEqual(byId[id].product_callers,['P01','P02'])}
+ assert.equal(byId['EV15.audit.append.requested'].product_providers.length,15);
+ assert.equal((page.match(/归属待明确（候选）/g)||[]).length,4);
+ const s=setup();s.set('product-provider','P04');assert(!s.visible().some(r=>r.id==='iface-CT38-1'));
+ s.reset();s.set('product-caller','P04');assert(s.visible().some(r=>r.id==='iface-CT38-1'));
 });

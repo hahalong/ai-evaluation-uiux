@@ -32,12 +32,13 @@ http([39,40,96,100,101], '11')
 http([41,42,97,98,99], '12')
 http([43,65,66,76], '14', '2 14')
 http([44,48], '15')
-http([45], '1 2 6 7 8 10 11 12 15',note='跨产品异步操作查询：归属随operation的原始作业；不是全部归属P02或P15。')
+http([45], '', '1 2 6 7 8 10 11 12 15',note='通用异步操作查询由API接口提供；operation原始业务归属用于授权和路由，不能当作查询接口的多个提供方。')
 http([46,47,90,91,92,93], '13')
 http([94], '13', '2 13')
 http([49,50,88], '2', '1 2 3 4 5 6 8',note='通用工作生命周期属于P02调度运行；调用产品随IMPORT/EXECUTE/SCORE/REPORT等kind确定，不代表全部同时调用。')
 http([51,52,62,106], '2', '2 3 4 5')
-http([53,54], '1 2 8', '1 2 3 4 5 6 8',note='共享材料服务按资产上传P01、任务原始记录P02、证据追溯P08区分；主PRD未将全部原始记录指定给单一产品，技术写入责任不变。')
+http([53], '', '1 2 3 4 5 6 8',note='证据管理提供共用文件暂存能力；资产、任务等是材料用途及调用场景，不是文件服务的并列产品归属。')
+http([54], '8', '1 2 3 4 5 6 8',note='证据提交与追溯归P08；资产、执行和评分模块作为材料生产方调用，不因此成为服务提供方。')
 http([55], '8', '2 3 4 5 6 8')
 http([56,58], '1', '1 2')
 http([57], '1', '6 7',note='参考内容归P01资产；访问决策由P13协作提供。执行器不在调用方。')
@@ -47,12 +48,12 @@ http([61], '2 6', '3 4 5 6',note='按执行回执/评分回执条件归P02/P06�
 http([63], '14', '1 2 3 4 5 6 8',note='仅映射原清单四类Worker的用量用途；AI助手入账仍见CT29.1/IF-Q04。')
 http([64], '14', '2 3 4 5')
 http([67], '2', '2 3 4 5 7 8')
-http([73,74], '1 2 8', '1 2 7',note='通用文件暂存/确认；业务使用方按资产导入、人工采集和试评材料区分。')
+http([73,74], '', '1 2 7',note='共用文件暂存/确认只形成file_object；资产导入、人工采集和试评是调用用途，此时不等于正式证据登记。')
 http([75], '8', '1 2 7 8 10')
-http([80,81,82], '1 2', '1 2',note='资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。')
+http([80,81,82], '2', '1 2',note='方案管理提供试评的创建、查询与确认，按P02管理试评流程；P01资产试评复用该接口，属于调用方。')
 http([84,85,86,87], '2', '2 3 4 5')
 http([102,103,104], '7', '1 2 7')
-http([105], '2 8', '1 2 7')
+http([105], '8', '1 2 7',note='证据管理提供人工证据提交，归P08证据追溯；P01/P02/P07是提交入口对应的调用场景。')
 http([107], '2', '2 15')
 http([108], '14', '2 15')
 
@@ -65,7 +66,7 @@ put('CT07.1','1','2 3 4 5 6')
 put('CT09.1','6','2');put('CT09.2','7','2');put('CT09.3','13','2')
 put('CT11.1','2','2 11');put('CT12.1','2','2')
 put('CT16.1 CT16.2 CT16.3','','2 3 4 5',note='提供方是平台外部被测对象/接入端，不是主PRD产品模块；平台执行适配对应调用产品。')
-put('CT18.1','1 2 8','1 2 3 4 5 6 8')
+put('CT18.1','','1 2 3 4 5 6 8',note='与op053同一公共上传能力；调用产品和材料用途不改变提供方归属。')
 put('CT19.1','8','2 6 7 8 9 10 11')
 put('CT21.1','6','2');put('CT22.1','2','6');put('CT23.1','7','2 6')
 put('CT25.1','8','2 11');put('CT25.2','6','8');put('CT25.3','7','8')
@@ -76,22 +77,22 @@ put('CT30.2','15','1 2 6 8 9 10 11 13 14 15',note='Inbox为公共可靠运行机
 put('CT31.1','','10',note='提供方为外部缺陷系统；平台问题诊断经消息与集成调用。')
 put('CT31.2','2','11');put('CT32.1','1','12');put('CT32.2','2','12')
 put('CT33.1','15','1 2 3 4 5 6 7 8 9 10 11 12 13 14 15')
-put('CT34.1 CT34.3','2 14','15');put('CT34.2','14','15');put('CT34.4','15','15')
+put('CT34.1 CT34.3','2 14','15',note='候选归属，非已确认共同提供：原契约合并流程与资源动作，唯一入口及分工待IF-Q02明确；不得据此分派多个共同负责方。');put('CT34.2','14','15');put('CT34.4','15','15')
 put('CT35.1 CT35.2','1','7');put('CT35.3','1','6')
 put('CT36.1','','1 2 3 4 5 6 8 10 11 12',note='提供方为受控出口基础设施（非独立产品模块）；P13/P15负责安全与运维治理，不因此成为本动作的服务提供方。')
 put('CT37.1','1','2')
-put('CT38.1 CT38.2 CT38.3 CT38.4 CT38.5 CT38.6','2 3 4 5','2 3 4 5',note='同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。')
+put('CT38.1 CT38.2 CT38.3 CT38.4 CT38.5 CT38.6','','2 3 4 5',note='执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。')
 put('CT39.1','6','6')
 put('CT44.1 CT44.2 CT44.3','','2 3 4',note='提供方为外部设备/注入环境；模型端侧与Agent设备场景按批准接入能力调用。')
-put('CT45.1','1 13','2');put('CT46.1','','8 11',note='外部CI/业务API接收回执，平台P08结果交付/P11持续评测触发回调。')
+put('CT45.1','1 13','2',note='候选归属，非已确认共同提供：权限规则与资产规则查询被合并，唯一入口及协作分工待IF-Q02明确。');put('CT46.1','','8 11',note='外部CI/业务API接收回执，平台P08结果交付/P11持续评测触发回调。')
 
 put('EV01.AssetPublished','1','2 6 11')
-put('EV02.import.completed','1 2','1 2',note='资产导入或已有记录导入按import用途区分归属；消费方仍是原登记模块。')
+put('EV02.import.completed','1 2','1 2',note='消息生产场景分别为P01资产导入、P02已有记录导入；按import用途确定本条消息的生产归属，不是一个同步服务有两个所有者。')
 put('EV03.plan.frozen','2','2 15')
 put('EV04.work.completed','2','1 2 6 8',note='按work.kind唯一处理；完整kind映射仍见IF-Q06。')
 put('EV05.node.completed','2','2')
 put('EV06.run.started EV06.run.ended','2','8 14 15')
-put('EV07.evidence.recorded','2 8','2 8')
+put('EV07.evidence.recorded','8','2 8',note='证据管理在证据登记后生产事件，归P08；P02流程编排消费事件推进任务，不是该事实的生产方。')
 put('EV08.score.completed','6','2 8')
 put('EV09.review.required','6','2',note='本事件的直接消费者为流程编排P02，再经CT23创建P07批次；不把间接P07写成事件直接消费者。')
 put('EV10.review.completed','7','1 2 8')
@@ -99,13 +100,18 @@ put('EV11.snapshot.published','8','2 8 9 10 11',note='按已登记消息与集�
 put('EV12.pack.revoked','13','1 2 14',note='仅映射已明确的编排、调度、参考模块；未明确查询缓存消费者仍见IF-Q05。')
 put('EV13.usage.recorded','14','8');put('EV13.budget.exhausted','14','2')
 put('EV14.qualification.changed','6','2 8')
-put('EV15.audit.append.requested','1 2 3 4 5 6 7 8 9 10 11 12 13 14 15','15')
+put('EV15.audit.append.requested','1 2 3 4 5 6 7 8 9 10 11 12 13 14 15','15',note='消息行列的是实际业务动作的生产场景，各产品可请求审计；P15消费并落审计记录。多生产者不表示审计服务归属全部产品。')
 
 assert set(M)=={r['id'] for r in data['rows']},set(M)^{r['id'] for r in data['rows']}
 for row in data['rows']:
  row.update(M[row['id']])
  for key in ('product_providers','product_callers'):assert all(p in products for p in row[key])
- if not row['product_providers']:row['product_provider_scope']='公共基础设施（非独立产品模块）' if row['id']=='CT36.1' else '平台外部（非产品模块）'
+ if not row['product_providers']:
+  scope={'op045':'公共查询能力（无独立产品归属）',
+         **dict.fromkeys(['op053','op073','op074','CT18.1'],'公共文件能力（无独立产品归属）'),
+         **dict.fromkeys([f'CT38.{i}' for i in range(1,7)],'公共执行能力（无独立产品归属）'),
+         'CT36.1':'公共基础设施（非独立产品模块）'}
+  row['product_provider_scope']=scope.get(row['id'],'平台外部（非产品模块）')
 data['products']=products
 data['product_mapping_basis']={'date':'2026-11-28','sources':['主PRD V1.3 §5.2产品职责/模块协作','概要设计 V2.4 §4.1产品功能—技术能力映射','详细设计 V1.2逐接口合同、CT与事件定义'],'status':'技术设计的业务归属映射；不是运行调用统计或新增授权；原IF-Q01—06不关闭'}
 (D/'inventory.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
@@ -129,7 +135,7 @@ def change_row(m):
  scope=row.get('product_provider_scope','')
  if scope:meta['product_provider_labels'].append(scope)
  head=re.sub(r'data-iface="[^"]+"',lambda _: 'data-iface="'+E(json.dumps(meta,ensure_ascii=False),quote=True)+'"',head)
- pp='<td class="iface-product-provider">'+(labels(row['product_providers']) or E(scope))+'<details><summary>产品归属说明</summary>'+E(row['product_note'])+'</details></td>'
+ pp='<td class="iface-product-provider">'+('<strong>归属待明确（候选）</strong><br>' if row['id'] in ['op061','CT34.1','CT34.3','CT45.1'] else '')+(labels(row['product_providers']) or E(scope))+'<details><summary>产品归属说明</summary>'+E(row['product_note'])+'</details></td>'
  pc='<td class="iface-product-caller">'+labels(row['product_callers'])+'</td>'
  count+=1
  return head+''.join(cells[:3]+[pp,cells[3],pc]+cells[4:])+'</tr>'
@@ -141,8 +147,9 @@ options='<datalist id="iface-product-options">'+''.join('<option value="'+E(k+' 
 newcontrols='<label for="iface-product-provider">提供方产品模块<input id="iface-product-provider" type="search" list="iface-product-options" placeholder="P01 或评测资产"></label><label for="iface-product-caller">调用方产品模块<input id="iface-product-caller" type="search" list="iface-product-options" placeholder="P02 或对象接入"></label>'+options
 if 'id="iface-product-provider"' not in s:s=s.replace('<button type="button" id="iface-reset">',newcontrols+'<button type="button" id="iface-reset">',1)
 s=s.replace('placeholder="接口编号、名称、路径或场景"','placeholder="接口 / 产品编号、模块名、路径或场景"')
-note='<p id="iface-product-help"><strong>产品维度：</strong>提供方产品模块表示接口能力归属；调用方产品模块表示直接调用技术组件承接的产品场景，含同模块页面调用。消息行分别对应生产/消费产品；多值按用途或对象类型选择，不代表全部同时调用。主PRD P01—P15保持原名；外部系统、出口基础设施不伪造产品编号。映射依据主PRD产品职责及概要§4.1，再按每个操作细化，原有待明确项继续保留。<strong>筛选用法：</strong>六个条件组合取交集；产品字段支持编号或中文名称。P01按产品编号精确匹配，不会误命中op010。筛选只作用于下方逐接口表，技术模块统计索引仍显示全量。</p>'
+note='<p id="iface-product-help"><strong>产品维度：</strong>提供方产品模块表示接口能力归属，不等于受益产品或使用范围；共用执行、文件、查询能力没有独立产品归属时明确标注公共能力，不强行分配P编号。调用方产品模块表示直接调用技术组件承接的产品场景，含同模块子组件调用，不代表产品模块之间各有一次远程调用。消息行两列分别表示生产与消费产品，多生产者可以成立；归属有争议的接口展示候选项并保留IF-Q待明确状态。<strong>筛选用法：</strong>六个条件取交集；产品字段支持编号或名称，Agent评测与Agent 评测等中英文空格写法等价。P01按编号精确匹配。需要查某产品使用的公共接口，请筛选调用方产品模块；关键词可搜索两方向及场景说明。筛选只作用于下方逐接口表，技术模块统计索引仍显示全量。</p>'
 if 'id="iface-product-help"' not in s:s=s.replace('<div class="iface-controls">',note+'<div class="iface-controls">',1)
+else:s=re.sub(r'<p id="iface-product-help">.*?</p>',lambda _:note,s,flags=re.S)
 css='''<style id="iface-product-style">#interface-table{min-width:1510px}#interface-table th:nth-child(1){width:100px}#interface-table th:nth-child(2){width:220px}#interface-table th:nth-child(3){width:115px}#interface-table th:nth-child(4){width:190px}#interface-table th:nth-child(5){width:130px}#interface-table th:nth-child(6){width:190px}#interface-table th:nth-child(7){width:120px}#interface-table th:nth-child(8){width:225px}#interface-table th:nth-child(9){width:100px}#interface-directory input{width:230px}#interface-directory .iface-controls label{max-width:100%}#interface-directory .iface-count{flex-basis:100%;font-weight:600}#interface-table tr[hidden]{display:none!important}@media print{#interface-table{min-width:0}}</style>'''
 s=re.sub(r'<style id="iface-product-style">.*?</style>','',s,flags=re.S)
 s=s.replace('<section id="interface-directory">',css+'<section id="interface-directory">',1)

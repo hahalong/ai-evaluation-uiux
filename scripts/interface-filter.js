@@ -5,7 +5,12 @@
   const q = field('query'), p = field('provider'), c = field('caller'), k = field('kind');
   const pp = field('product-provider'), pc = field('product-caller');
   const controls = [q, p, c, k, pp, pc];
-  const normalize = value => value.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
+  // Ignore typographical spacing at Chinese/English word boundaries, but retain
+  // spaces after product IDs and between independent English search terms.
+  const normalize = value => value.normalize('NFKC').toLowerCase()
+    .replace(/([a-z])\s+(?=\p{Script=Han})/gu, '$1')
+    .replace(/(\p{Script=Han})\s+(?=[a-z])/gu, '$1')
+    .replace(/\s+/g, ' ').trim();
   const terms = value => normalize(value).split(' ').filter(Boolean);
   const rows = [...root.querySelectorAll('tr[data-iface]')].map(el => ({
     el, meta: JSON.parse(el.dataset.iface), text: normalize(el.textContent),
@@ -37,6 +42,8 @@
   for (const el of controls) {
     el.addEventListener('input', apply);
     el.addEventListener('change', apply);
+    el.addEventListener('search', apply);
+    el.addEventListener('compositionend', apply);
   }
   field('reset').addEventListener('click', () => { clear(); apply(); });
   root.querySelectorAll('[data-iface-module]').forEach(b => b.addEventListener('click', () => {

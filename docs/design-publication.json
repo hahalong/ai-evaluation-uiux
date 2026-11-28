@@ -15,7 +15,7 @@
       "version": "V1.2 · ER修订版",
       "source_file": "AI评测平台详细设计说明书_V1.2.html",
       "source_sha256": "32d8a5a92a0d7a38af3ecbfa742f0b606d21abf15678c44b68bd8bce14f1e191",
-      "published_sha256": "3a316060501b25b770d7f9ab9710e2f766a789121e45434acc6e6a2141db7e1c"
+      "published_sha256": "cd8b2896b8ee531ed22d4e46e34f77c91c73188873d79451577b2b138964301f"
     },
     {
       "page": "tasks.html",
@@ -45,7 +45,7 @@
   "checks": [
     {
       "page": "index.html",
-      "bytes": 1091514,
+      "bytes": 1090391,
       "svg": 17,
       "anchors_and_local_links": "passed",
       "no_download_controls": "passed"

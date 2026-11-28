@@ -1414,17 +1414,7 @@
       ],
       "status": "已有定义",
       "target": "s148",
-      "product_providers": [
-        "P01",
-        "P02",
-        "P06",
-        "P07",
-        "P08",
-        "P10",
-        "P11",
-        "P12",
-        "P15"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P01",
         "P02",
@@ -1436,7 +1426,8 @@
         "P12",
         "P15"
       ],
-      "product_note": "跨产品异步操作查询：归属随operation的原始作业；不是全部归属P02或P15。"
+      "product_note": "通用异步操作查询由API接口提供；operation原始业务归属用于授权和路由，不能当作查询接口的多个提供方。",
+      "product_provider_scope": "公共查询能力（无独立产品归属）"
     },
     {
       "id": "op046",
@@ -1687,11 +1678,7 @@
       "external": [],
       "status": "已有定义",
       "target": "s156",
-      "product_providers": [
-        "P01",
-        "P02",
-        "P08"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P01",
         "P02",
@@ -1701,7 +1688,8 @@
         "P06",
         "P08"
       ],
-      "product_note": "共享材料服务按资产上传P01、任务原始记录P02、证据追溯P08区分；主PRD未将全部原始记录指定给单一产品，技术写入责任不变。"
+      "product_note": "证据管理提供共用文件暂存能力；资产、任务等是材料用途及调用场景，不是文件服务的并列产品归属。",
+      "product_provider_scope": "公共文件能力（无独立产品归属）"
     },
     {
       "id": "op054",
@@ -1727,8 +1715,6 @@
       "status": "已有定义",
       "target": "s157",
       "product_providers": [
-        "P01",
-        "P02",
         "P08"
       ],
       "product_callers": [
@@ -1740,7 +1726,7 @@
         "P06",
         "P08"
       ],
-      "product_note": "共享材料服务按资产上传P01、任务原始记录P02、证据追溯P08区分；主PRD未将全部原始记录指定给单一产品，技术写入责任不变。"
+      "product_note": "证据提交与追溯归P08；资产、执行和评分模块作为材料生产方调用，不因此成为服务提供方。"
     },
     {
       "id": "op055",
@@ -2336,17 +2322,14 @@
       ],
       "status": "已有定义",
       "target": "s176",
-      "product_providers": [
-        "P01",
-        "P02",
-        "P08"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P01",
         "P02",
         "P07"
       ],
-      "product_note": "通用文件暂存/确认；业务使用方按资产导入、人工采集和试评材料区分。"
+      "product_note": "共用文件暂存/确认只形成file_object；资产导入、人工采集和试评是调用用途，此时不等于正式证据登记。",
+      "product_provider_scope": "公共文件能力（无独立产品归属）"
     },
     {
       "id": "op074",
@@ -2370,17 +2353,14 @@
       ],
       "status": "已有定义",
       "target": "s177",
-      "product_providers": [
-        "P01",
-        "P02",
-        "P08"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P01",
         "P02",
         "P07"
       ],
-      "product_note": "通用文件暂存/确认；业务使用方按资产导入、人工采集和试评材料区分。"
+      "product_note": "共用文件暂存/确认只形成file_object；资产导入、人工采集和试评是调用用途，此时不等于正式证据登记。",
+      "product_provider_scope": "公共文件能力（无独立产品归属）"
     },
     {
       "id": "op075",
@@ -2560,14 +2540,13 @@
       "status": "已有定义",
       "target": "s183",
       "product_providers": [
-        "P01",
         "P02"
       ],
       "product_callers": [
         "P01",
         "P02"
       ],
-      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+      "product_note": "方案管理提供试评的创建、查询与确认，按P02管理试评流程；P01资产试评复用该接口，属于调用方。"
     },
     {
       "id": "op081",
@@ -2592,14 +2571,13 @@
       "status": "已有定义",
       "target": "s184",
       "product_providers": [
-        "P01",
         "P02"
       ],
       "product_callers": [
         "P01",
         "P02"
       ],
-      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+      "product_note": "方案管理提供试评的创建、查询与确认，按P02管理试评流程；P01资产试评复用该接口，属于调用方。"
     },
     {
       "id": "op082",
@@ -2624,14 +2602,13 @@
       "status": "已有定义",
       "target": "s185",
       "product_providers": [
-        "P01",
         "P02"
       ],
       "product_callers": [
         "P01",
         "P02"
       ],
-      "product_note": "资产试评与方案试评共用能力；由pilot所属资产/方案区分产品归属。"
+      "product_note": "方案管理提供试评的创建、查询与确认，按P02管理试评流程；P01资产试评复用该接口，属于调用方。"
     },
     {
       "id": "op083",
@@ -3340,7 +3317,6 @@
       "status": "已有定义",
       "target": "s208",
       "product_providers": [
-        "P02",
         "P08"
       ],
       "product_callers": [
@@ -3348,7 +3324,7 @@
         "P02",
         "P07"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "证据管理提供人工证据提交，归P08证据追溯；P01/P02/P07是提交入口对应的调用场景。"
     },
     {
       "id": "op106",
@@ -3868,11 +3844,7 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P01",
-        "P02",
-        "P08"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P01",
         "P02",
@@ -3882,7 +3854,8 @@
         "P06",
         "P08"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "与op053同一公共上传能力；调用产品和材料用途不改变提供方归属。",
+      "product_provider_scope": "公共文件能力（无独立产品归属）"
     },
     {
       "id": "CT19.1",
@@ -4564,7 +4537,7 @@
       "product_callers": [
         "P15"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "候选归属，非已确认共同提供：原契约合并流程与资源动作，唯一入口及分工待IF-Q02明确；不得据此分派多个共同负责方。"
     },
     {
       "id": "CT34.2",
@@ -4622,7 +4595,7 @@
       "product_callers": [
         "P15"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "候选归属，非已确认共同提供：原契约合并流程与资源动作，唯一入口及分工待IF-Q02明确；不得据此分派多个共同负责方。"
     },
     {
       "id": "CT34.4",
@@ -4827,19 +4800,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT38.2",
@@ -4861,19 +4830,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT38.3",
@@ -4895,19 +4860,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT38.4",
@@ -4929,19 +4890,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT38.5",
@@ -4963,19 +4920,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT38.6",
@@ -4997,19 +4950,15 @@
       "external": [],
       "status": "已有定义",
       "target": "s400",
-      "product_providers": [
-        "P02",
-        "P03",
-        "P04",
-        "P05"
-      ],
+      "product_providers": [],
       "product_callers": [
         "P02",
         "P03",
         "P04",
         "P05"
       ],
-      "product_note": "同技术模块内部的引擎执行桥接；按冻结对象类型选择P03/P04/P05，P02负责执行控制。"
+      "product_note": "执行器运行时直接调用同模块内的引擎执行适配，共用契约无独立产品归属。P02任务执行及P03模型、P04 Agent、P05非Agent应用为使用场景，具体实现由冻结绑定决定；不是四个产品服务互相调用。",
+      "product_provider_scope": "公共执行能力（无独立产品归属）"
     },
     {
       "id": "CT39.1",
@@ -5154,7 +5103,7 @@
       "product_callers": [
         "P02"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "候选归属，非已确认共同提供：权限规则与资产规则查询被合并，唯一入口及协作分工待IF-Q02明确。"
     },
     {
       "id": "CT46.1",
@@ -5245,7 +5194,7 @@
         "P01",
         "P02"
       ],
-      "product_note": "资产导入或已有记录导入按import用途区分归属；消费方仍是原登记模块。"
+      "product_note": "消息生产场景分别为P01资产导入、P02已有记录导入；按import用途确定本条消息的生产归属，不是一个同步服务有两个所有者。"
     },
     {
       "id": "EV03.plan.frozen",
@@ -5425,14 +5374,13 @@
       "status": "已有定义",
       "target": "s407",
       "product_providers": [
-        "P02",
         "P08"
       ],
       "product_callers": [
         "P02",
         "P08"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "证据管理在证据登记后生产事件，归P08；P02流程编排消费事件推进任务，不是该事实的生产方。"
     },
     {
       "id": "EV08.score.completed",
@@ -5730,7 +5678,7 @@
       "product_callers": [
         "P15"
       ],
-      "product_note": "按主PRD产品职责及本接口业务场景映射；同产品模块的页面/运行子组件也可作为调用方。"
+      "product_note": "消息行列的是实际业务动作的生产场景，各产品可请求审计；P15消费并落审计记录。多生产者不表示审计服务归属全部产品。"
     }
   ],
   "ct_index": {
